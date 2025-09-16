@@ -21,7 +21,7 @@ def RegistrarUsuario():
         nueva_contraseña = input("Ingrese una contraseña: ")
         usuarios.append(nuevo_usuario)
         contraseñas.append(nueva_contraseña)
-        print("Registro exitoso.\n")
+        print("✅ Registro exitoso.\n")
 
 # Login de clientes
 def Login():
@@ -39,7 +39,7 @@ def Login():
     if usuario in usuarios:
         i = usuarios.index(usuario)
         if contraseñas[i] == contraseña:
-            print(f"Bienvenido/a, {usuario}.\n")
+            print(f"✅ Bienvenido/a, {usuario}.\n")
             return usuario
         else:
             print("Contraseña incorrecta.\n")
@@ -55,7 +55,7 @@ def agregarVuelo():
     Retorna: Nada.
     """
     if not usuarios:
-        print("Tenés que iniciar sesión.")
+        print(" Tenés que iniciar sesión.")
         return
     origen = input("Origen: ")
     destino = input("Destino: ")
@@ -89,7 +89,7 @@ def reservar_vuelo(usuario):
     Retorna: Nada.
     """
     if not usuario:
-        print("Tenés que iniciar sesión.")
+        print("❌ Tenés que iniciar sesión.")
         return
 
     if not vuelos:
@@ -127,7 +127,7 @@ def reservar_vuelo(usuario):
     }
     reservas.append(reserva)
 
-    print("Reserva creada:", reserva)
+    print("✅ Reserva creada:", reserva)
 
 def ver_reservas(usuario):
     """
@@ -167,6 +167,32 @@ def eliminar_vuelo():
     else:
         print("Vuelo no encontrado.")
 
+def busquedaVuelos():
+    """
+    Objetivo: Mostrar los vuelos disponibles y permitir seleccionar uno.
+    Parámetros: Ninguno.
+    Retorna: Nada.
+    """
+    if not vuelos:
+        print("No hay vuelos cargados.")
+        return
+    print("\n--- Vuelos disponibles ---")
+    for idx, vuelo in enumerate(vuelos, 1):
+        print(f"{idx}. ID: {vuelo['id']} | Origen: {vuelo['origen']} | Destino: {vuelo['destino']} | Fecha: {vuelo['fecha']} | Precio: {vuelo['precio']} | Asientos: {vuelo['asientos']}")
+    seleccion = input(f"Seleccione el vuelo por su número (1 a {len(vuelos)}), o presione Enter para salir: ")
+    if seleccion.isdigit():
+        seleccion = int(seleccion)
+        if 1 <= seleccion <= len(vuelos):
+            vuelo = vuelos[seleccion - 1]
+            print(f"Usted ha seleccionado el vuelo con ID {vuelo['id']}, origen {vuelo['origen']} y destino {vuelo['destino']}\n")
+        else:
+            print("Selección inválida.")
+    elif seleccion.strip() == "":
+        print("Saliendo de la búsqueda de vuelos.")
+    else:
+        print("Selección inválida.")
+
+
 # Interfaz, en donde el programa se ejecuta 
 def main():
     """
@@ -185,6 +211,8 @@ def main():
         print("5. Eliminar Vuelo")
         print("6. Reservar Vuelo")
         print("7. Ver Reservas")
+        print("8. Buscar Vuelos")  
+        print("9. Mostrar vuelos")
         opcion = input("Elegí una opción: ")
 
         if opcion == "1":
@@ -202,8 +230,14 @@ def main():
             eliminar_vuelo()
         elif opcion == "6":
             reservar_vuelo(usuario_logueado)
+            break
         elif opcion == "7":
             ver_reservas(usuario_logueado)
+        elif opcion == "8":
+            busquedaVuelos()
+        elif opcion == "9":
+            print(vuelos)
+
         else:
             print("Opcion invalida. \n")
 
