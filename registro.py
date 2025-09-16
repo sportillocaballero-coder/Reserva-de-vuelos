@@ -1,6 +1,9 @@
 # La lista paralelas, aca se guardan el usuario y contraseña de los clientes por posicion 
 usuarios = []
 contraseñas = []
+idVuelos =[12345,54321,53421]
+origenes = ["Argentina","Peru","Uruguay"]
+destinos = ["Paraguay","Chile","Brasil"]
 
 #Se registran los clientes
 def RegistrarUsuario():
@@ -45,6 +48,19 @@ def Login():
 
     return None
 
+def busquedaVuelos():
+    print("\n--- Elige el origen del vuelo ---")
+    c = 0
+    for origen in origenes:
+        print(f"{c + 1} -El origen del vuelo es: {origen}")
+        print(f"El destino del vuelo es: {destinos[c]}\n")
+        c += 1
+    seleccionVuelo = int(input(f"Seleccione el vuelo por su numero 1 a {len(origenes)}: "))
+    while seleccionVuelo > len(origenes) or seleccionVuelo < 1:
+        print("Error en la seleccion del vuelo")
+        seleccionVuelo = int(input(f"Seleccione el vuelo por su numero 1 a {len(origenes)}: "))
+    print(f"Usted ah seleccionado el vuelo con origen {origenes[seleccionVuelo-1]} y destino {destinos[seleccionVuelo - 1]}\n")
+
 # Interfaz, en donde el programa se ejecuta 
 def main():
     """
@@ -58,6 +74,7 @@ def main():
         print("1. Registrarse")
         print("2. Iniciar sesión")
         print("3. Salir")
+        print("4. Buscar Vuelos")
         opcion = input("Elegí una opción: ")
 
         if opcion == "1":
@@ -69,6 +86,8 @@ def main():
                 # Aca es donde se podrian llamar las funciones de reserva, busqueda, etc...
         elif opcion == "3":
             print(" ¡Hasta luego!\n")
+        elif opcion == "4":
+            busquedaVuelos()
         else:
             print("Opcion invalida. \n")
 
