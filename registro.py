@@ -16,12 +16,12 @@ def RegistrarUsuario():
     nuevo_usuario = input("Ingrese un nombre de usuario: ")
 
     if nuevo_usuario in usuarios:
-        print("Ese usuario ya está registrado.\n")
+        print("Ese usuario ya esta registrado\n")
     else:
         nueva_contraseña = input("Ingrese una contraseña: ")
         usuarios.append(nuevo_usuario)
         contraseñas.append(nueva_contraseña)
-        print("✅ Registro exitoso.\n")
+        print("Registro exitoso\n")
 
 # Login de clientes
 def Login():
@@ -32,19 +32,19 @@ def Login():
       - str: Nombre de usuario si el login es exitoso.
       - None: Si falla el login.
     """
-    print("\n--- Iniciar Sesión ---")
+    print("\n--- Iniciar Sesion ---")
     usuario = input("Usuario: ")
     contraseña = input("Contraseña: ")
 
     if usuario in usuarios:
         i = usuarios.index(usuario)
         if contraseñas[i] == contraseña:
-            print(f"✅ Bienvenido/a, {usuario}.\n")
+            print(f"Bienvenido/a, {usuario}\n")
             return usuario
         else:
-            print("Contraseña incorrecta.\n")
+            print("Contraseña incorrecta\n")
     else:
-        print("El usuario no existe.\n")
+        print("El usuario no existe\n")
 
     return None
 
@@ -55,7 +55,7 @@ def agregarVuelo():
     Retorna: Nada.
     """
     if not usuarios:
-        print(" Tenés que iniciar sesión.")
+        print(" Tenes que iniciar sesion")
         return
     origen = input("Origen: ")
     destino = input("Destino: ")
@@ -75,11 +75,11 @@ def agregarVuelo():
     # evitar duplicados (mismo origen, destino y fecha)
     for v in vuelos:
         if v["origen"] == origen and v["destino"] == destino and v["fecha"] == fecha:
-            print("Ese vuelo ya existe.")
+            print("Ese vuelo ya existe")
             return
 
     vuelos.append(vuelo)
-    print("Vuelo agregado con éxito.")
+    print("Vuelo agregado con exito")
 
 def reservar_vuelo(usuario):
     """
@@ -89,11 +89,11 @@ def reservar_vuelo(usuario):
     Retorna: Nada.
     """
     if not usuario:
-        print("❌ Tenés que iniciar sesión.")
+        print(" Tenes que iniciar sesion")
         return
 
     if not vuelos:
-        print("No hay vuelos cargados.")
+        print("No hay vuelos cargados")
         return
 
     vid = input("ID del vuelo: ")
@@ -109,10 +109,10 @@ def reservar_vuelo(usuario):
         if v["id"] == vid:
             vuelo = v
     if not vuelo:
-        print("Vuelo no encontrado.")
+        print("Vuelo no encontrado")
         return
     if vuelo["asientos"] < cant:
-        print(f"Solo hay {vuelo['asientos']} asientos.")
+        print(f"Solo hay {vuelo['asientos']} asientos")
         return
 
     # actualizar vuelos
@@ -127,7 +127,7 @@ def reservar_vuelo(usuario):
     }
     reservas.append(reserva)
 
-    print("✅ Reserva creada:", reserva)
+    print(" Reserva creada:", reserva)
 
 def ver_reservas(usuario):
     """
@@ -143,7 +143,7 @@ def ver_reservas(usuario):
             print(r)
             tiene = True
     if not tiene:
-        print("No tenés reservas.")
+        print("No tenes reservas")
 
 def eliminar_vuelo():
     """
@@ -152,7 +152,7 @@ def eliminar_vuelo():
     Retorna: Nada.
     """
     if not vuelos:
-        print("No hay vuelos cargados.")
+        print("No hay vuelos cargados")
         return
     vid = input("ID del vuelo a eliminar: ")
     encontrado = False
@@ -163,9 +163,9 @@ def eliminar_vuelo():
             encontrado = True
     if encontrado and idx is not None:
         del vuelos[idx]
-        print("Vuelo eliminado con éxito.")
+        print("Vuelo eliminado con exito")
     else:
-        print("Vuelo no encontrado.")
+        print("Vuelo no encontrado")
 
 def busquedaVuelos():
     """
@@ -174,26 +174,26 @@ def busquedaVuelos():
     Retorna: Nada.
     """
     if not vuelos:
-        print("No hay vuelos cargados.")
+        print("No hay vuelos cargados")
         return
     print("\n--- Vuelos disponibles ---")
     for idx, vuelo in enumerate(vuelos, 1):
         print(f"{idx}. ID: {vuelo['id']} | Origen: {vuelo['origen']} | Destino: {vuelo['destino']} | Fecha: {vuelo['fecha']} | Precio: {vuelo['precio']} | Asientos: {vuelo['asientos']}")
-    seleccion = input(f"Seleccione el vuelo por su número (1 a {len(vuelos)}), o presione Enter para salir: ")
+    seleccion = input(f"Seleccione el vuelo por su numero (1 a {len(vuelos)}), o presione Enter para salir: ")
     if seleccion.isdigit():
         seleccion = int(seleccion)
         if 1 <= seleccion <= len(vuelos):
             vuelo = vuelos[seleccion - 1]
             print(f"Usted ha seleccionado el vuelo con ID {vuelo['id']}, origen {vuelo['origen']} y destino {vuelo['destino']}\n")
         else:
-            print("Selección inválida.")
+            print("Seleccion invalida")
     elif seleccion.strip() == "":
-        print("Saliendo de la búsqueda de vuelos.")
+        print("Saliendo de la busqueda de vuelos")
     else:
-        print("Selección inválida.")
+        print("Seleccion invalida")
 
 
-# Interfaz, en donde el programa se ejecuta 
+# Interfaz
 def main():
     """
     Objetivo: Menu principal para registrar, iniciar sesion o salir
@@ -202,10 +202,10 @@ def main():
     """
     usuario_logueado = None
     opcion = "0"
-    while opcion != "6":
+    while True:  
         print("===VUELOS====")
         print("1. Registrarse")
-        print("2. Iniciar sesión")
+        print("2. Iniciar sesion")
         print("3. Salir")
         print("4. Agregar Vuelo")
         print("5. Eliminar Vuelo")
@@ -213,7 +213,7 @@ def main():
         print("7. Ver Reservas")
         print("8. Buscar Vuelos")  
         print("9. Mostrar vuelos")
-        opcion = input("Elegí una opción: ")
+        opcion = input("Elegi una opcion: ")
 
         if opcion == "1":
             RegistrarUsuario()
@@ -221,25 +221,27 @@ def main():
             usuario_logueado = Login()
             if usuario_logueado is not None:
                 print(f" Usuario logueado: {usuario_logueado}")
+            
         elif opcion == "3":
-            print(" ¡Hasta luego!\n")
+            print(" Hasta luego\n")
             break
         elif opcion == "4":
             agregarVuelo()
         elif opcion == "5":
             eliminar_vuelo()
         elif opcion == "6":
-            reservar_vuelo(usuario_logueado)
-            break
+            if usuario_logueado is None:
+                print(" Debes iniciar sesion para reservar un vuelo\n")
+            else:
+                reservar_vuelo(usuario_logueado)
         elif opcion == "7":
             ver_reservas(usuario_logueado)
         elif opcion == "8":
             busquedaVuelos()
         elif opcion == "9":
             print(vuelos)
-
         else:
-            print("Opcion invalida. \n")
+            print("Opcion invalida\n")
 
 if __name__ == "__main__":
     main()
