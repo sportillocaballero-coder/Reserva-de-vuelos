@@ -21,7 +21,7 @@ def RegistrarUsuario():
         nueva_contraseña = input("Ingrese una contraseña: ")
         usuarios.append(nuevo_usuario)
         contraseñas.append(nueva_contraseña)
-        print("✅ Registro exitoso.\n")
+        print("Registro exitoso.\n")
 
 # Login de clientes
 def Login():
@@ -39,7 +39,7 @@ def Login():
     if usuario in usuarios:
         i = usuarios.index(usuario)
         if contraseñas[i] == contraseña:
-            print(f"✅ Bienvenido/a, {usuario}.\n")
+            print(f"Bienvenido/a, {usuario}.\n")
             return usuario
         else:
             print("Contraseña incorrecta.\n")
@@ -55,7 +55,7 @@ def agregarVuelo():
     Retorna: Nada.
     """
     if not usuarios:
-        print("❌ Tenés que iniciar sesión.")
+        print("Tenés que iniciar sesión.")
         return
     origen = input("Origen: ")
     destino = input("Destino: ")
@@ -89,7 +89,7 @@ def reservar_vuelo(usuario):
     Retorna: Nada.
     """
     if not usuario:
-        print("❌ Tenés que iniciar sesión.")
+        print("Tenés que iniciar sesión.")
         return
 
     if not vuelos:
@@ -127,7 +127,7 @@ def reservar_vuelo(usuario):
     }
     reservas.append(reserva)
 
-    print("✅ Reserva creada:", reserva)
+    print("Reserva creada:", reserva)
 
 def ver_reservas(usuario):
     """
