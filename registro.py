@@ -4,6 +4,11 @@ contraseñas = []
 
 #Se registran los clientes
 def RegistrarUsuario():
+    """
+    Objetivo: Registrar un nuevo usuario y contraseña si el usuario no existe
+    Parametros: Ninguno (usa input)
+    Retorna: Nada
+    """
     print("\n--Registro--")
     nuevo_usuario = input("Ingrese un nombre de usuario: ")
 
@@ -17,6 +22,13 @@ def RegistrarUsuario():
 
 # Login de clientes
 def Login():
+    """
+    Objetivo: Permitir que un usuario registrado inicie sesion
+    Parametros: Ninguno (usa input)
+    Retorna:
+      - str: Nombre de usuario si el login es exitoso
+      - None: Si falla el login
+    """
     print("\n--- Iniciar Sesión ---")
     usuario = input("Usuario: ")
     contraseña = input("Contraseña: ")
@@ -35,6 +47,11 @@ def Login():
 
 # Interfaz, en donde el programa se ejecuta 
 def main():
+    """
+    Objetivo: Menu principal para registrar, iniciar sesion o salir
+    Parametros: Ninguno
+    Retorna: Nada
+    """
     opcion = "0"
     while opcion != "3":
         print("===VUELOS====")
@@ -51,7 +68,7 @@ def main():
                 print(f" Usuario logueado: {usuario_logueado}")
                 # Aca es donde se podrian llamar las funciones de reserva, busqueda, etc...
         elif opcion == "3":
-            print(" ¡Bai bai!\n")
+            print(" ¡Hasta luego!\n")
         else:
             print("Opcion invalida. \n")
 
