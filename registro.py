@@ -1,9 +1,20 @@
-import random
+import random, re
 # La lista paralelas, aca se guardan el usuario y contraseña de los clientes por posicion 
 usuarios = []
 contraseñas = []
 vuelos = []
 reservas = []
+
+def verificar_caracter_especial(password):
+    """Verifica si la contraseña contiene al menos un carácter especial."""
+    # Patrón que busca CUALQUIER COSA que no sea letra, número o espacio.
+    patron_especial = r'[^a-zA-Z0-9\s]' 
+    
+    # re.search() devuelve un objeto match si encuentra el patrón, sino devuelve None.
+    if re.search(patron_especial, password):
+        return True  # Carácter especial encontrado
+    else:
+        return False # No hay caracteres especiales
 
 #Se registran los clientes
 def registrarUsuario():
@@ -18,7 +29,12 @@ def registrarUsuario():
     if nuevo_usuario in usuarios:
         print("Ese usuario ya esta registrado\n")
     else:
-        nueva_contraseña = input("Ingrese una contraseña: ").strip()
+        nueva_contraseña = input("Ingrese una contraseña, la contraseña debe tener un caracter especial: ").strip()
+        verificarCaracter = verificar_caracter_especial(nueva_contraseña)
+        while verificarCaracter == False:
+            print("ERROR")
+            nueva_contraseña = input("Ingrese una contraseña, la contraseña debe tener un caracter especial: ").strip()
+            verificarCaracter = verificar_caracter_especial(nueva_contraseña)
         usuarios.append(nuevo_usuario)
         contraseñas.append(nueva_contraseña)
         print("Registro exitoso\n")
@@ -73,6 +89,7 @@ def agregarVuelo():
     }
 
     # evitar duplicados (mismo origen, destino y fecha)
+    
     for v in vuelos:
         if v["origen"] == origen and v["destino"] == destino and v["fecha"] == fecha:
             print("Ese vuelo ya existe")
