@@ -32,7 +32,7 @@ def registrarUsuario():
         nueva_contraseña = input("Ingrese una contraseña, la contraseña debe tener un caracter especial: ").strip()
         verificarCaracter = verificar_caracter_especial(nueva_contraseña)
         while verificarCaracter == False:
-            print("ERROR")
+            print("ERROR, la contraseña debe de tener un caracter especial (!, #, ?, etc...)")
             nueva_contraseña = input("Ingrese una contraseña, la contraseña debe tener un caracter especial: ").strip()
             verificarCaracter = verificar_caracter_especial(nueva_contraseña)
         usuarios.append(nuevo_usuario)
@@ -40,7 +40,7 @@ def registrarUsuario():
         print("Registro exitoso\n")
 
 # Login de clientes
-def Login():
+def login():
     """
     Objetivo: Permitir que un usuario registrado inicie sesión.
     Parámetros: Ninguno (usa input).
@@ -209,6 +209,32 @@ def busquedaVuelos():
     else:
         print("Seleccion invalida")
 
+def menuVuelos(usuario):
+    opcion = "0"
+    while opcion != "5":
+        print(f"\n=== BIENVENIDO ({usuario}) ===")
+        print("1. Reserva tu vuelo")
+        print("2. Ver mis reservas")
+        print("3. Buscar vuelos")
+        print("4. Mostrar vuelos")
+        print("5. Salir")
+
+        opcion = input("Seleccione una opcion: ").strip()
+
+        if opcion == "1":
+            reservarVuelo(usuario)
+        if opcion == "2":
+            verReserva(usuario)
+        elif opcion == "3":
+            busquedaVuelos(usuario)
+        elif opcion == "4":
+            print(vuelos) #TODO: Ordenar mejor esta opcion, no esta bien graficamente 
+        elif opcion == "5":
+            print(f"Hasta pronto {usuario}")
+        else:
+            print("Opcion invalida")
+
+#TODO: Al entrar al modoAdmin, la interfaz se junta junto al de menuPrincipal. Esto no debe de ser asi 
 def modoAdmin ():
     print("\n-- Administracion --")
 
@@ -216,12 +242,16 @@ def modoAdmin ():
     user = input("Usuario del Admin: ").strip()
     password = input("Contraseña: ").strip()
 
-    #Palabra clave para inicio de sesion
+    #Palabra clave para inicio de sesion 
+    #TODO: Mejorar esta funcion, por ejemplo que sea oculto, pero varios puedan tener acceso, y tambien permitir dar permisos a usuarios del sistema
     if user == "admin" and password == "1234":
         print("Acceso admitido")
+
+        print(f"\nBienvenido admin") #TODO: Modificar mas adelante 
+        print("1. Agregar un Vuelo al Sistema")
+        print("2. Mostrar Vuelos ")
     else: 
         print("Credenciales invalidas")
-
 
 
 def menuPrincipal ():
@@ -237,59 +267,12 @@ def menuPrincipal ():
         if opcion == "1":
             registrarUsuario()
         if opcion == "2":
-            Login()
+            usuario = login()
+            if usuario is not None:
+                menuVuelos(usuario) #Este el menu de vuelos 
         if opcion == "3":
             modoAdmin()
         elif opcion == "4":
             print("Nos vemos!")
-        else:
-            print("Opcion invalida")
-
-# Interfaz
-"""def main():
-   
-    usuario_logueado = None
-    opcion = "0"
-    while True:  
-        print("===VUELOS====")
-        print("1. Registrarse")
-        print("2. Iniciar sesion")
-        print("3. Salir")
-        print("4. Agregar Vuelo")
-        print("5. Eliminar Vuelo")
-        print("6. Reservar Vuelo")
-        print("7. Ver Reservas")
-        print("8. Buscar Vuelos")  
-        print("9. Mostrar vuelos")
-        opcion = input("Elegi una opcion: ")
-
-        if opcion == "1":
-            registrarUsuario()
-        elif opcion == "2":
-            usuario_logueado = Login()
-            if usuario_logueado is not None:
-                print(f" Usuario logueado: {usuario_logueado}")
-            
-        elif opcion == "3":
-            print(" Hasta luego\n")
-            break
-        elif opcion == "4":
-            agregarVuelo()
-        elif opcion == "5":
-            eliminarVuelo()
-        elif opcion == "6":
-            if usuario_logueado is None:
-                print(" Debes iniciar sesion para reservar un vuelo\n")
-            else:
-                reservarVuelo(usuario_logueado)
-        elif opcion == "7":
-            verReserva(usuario_logueado)
-        elif opcion == "8":
-            busquedaVuelos()
-        elif opcion == "9":
-            print(vuelos)
-        else:
-            print("Opcion invalida\n")"""
-
 if __name__ == "__main__":
     menuPrincipal()
