@@ -1,0 +1,60 @@
+======================================PRIORIDAD 1 - TODOs sin JSON (Se pueden hacer a partir de ahora)
+
+usuarios.py
+- validar contrasena con mas reglas (longitud minima, mayusculas, numeros)
+- filtrar y transformar usuarios con listas por comprension
+
+
+vuelos.py
+- validar formato de fecha
+- validar que precio y asientos sean correctos
+- agregar matriz de asientos con lista de listas
+- filtrar vuelos por destino o fecha
+- ordenar vuelos por precio usando lambda
+- estadisticas con lambda: vuelo mas caro, mas barato, mas reservado
+
+reservas.py
+- validar que no se reserven mas asientos de los disponibles
+- permitir elegir asiento especifico en la matriz
+- cancelar reserva y devolver asientos al vuelo
+- pagar reserva cambiando estado pendiente a pagada
+- historial de reservas 
+- estadisticas con lambda: total de asientos reservados
+- usar listas por comprension para filtrar reservas de un usuario
+
+admin.py
+- submenu interactivo con opciones para vuelos, usuarios y reservas
+- mostrar estadisticas importadas de estadistica.py
+
+
+estadistica.py
+- implementar vueloCaro con lambda
+- implementar vueloBarato con lambda
+- implementar vueloMasReservado con lambda
+- implementar totalAsientos con listas por comprension
+
+main.py
+- en menu de vuelos agregar opciones para cancelar y pagar reservas y ver historial
+- en menu admin integrar estadisticas
+
+============================PRIORIDAD 2 - TODOs con JSON (hacer mas adelante)
+
+usuarios.py
+- guardar y cargar usuarios en archivo json
+- editar perfil de usuario guardando cambios
+
+vuelos.py
+- guardar y cargar vuelos en json
+
+reservas.py
+- guardar y cargar reservas en json
+
+admin.py
+- manejar lista de administradores en json en lugar de admin fijo
+
+main.py
+- cargar datos de usuarios, vuelos y reservas al iniciar
+- guardar datos al salir
+
+idiomas.json 
+implementar idiomas ingles y español con json 

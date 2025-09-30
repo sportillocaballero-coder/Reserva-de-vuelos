@@ -4,12 +4,25 @@ usuarios = []
 contrasenas = []
 
 def verificar_caracter_especial(password):
+    """
+    Objetivo: Verificar si una contrasena contiene al menos un caracter especial.
+    Parametros:
+      - password (str): Contrasena a verificar.
+    Retorna: bool - True si contiene caracter especial, False en caso contrario.
+    """
     patron_especial = r'[^a-zA-Z0-9\s]'
     return re.search(patron_especial, password) is not None
 
 def registrarUsuario():
+#TODO: #TODO guardar usuarios en archivos json para la persistencia de los datos 
+    """
+    Objetivo: Registrar un nuevo usuario en el sistema.
+    Parametros: Ninguno.
+    Retorna: Nada.
+    """
     print("\n--Registro--")
     nuevo_usuario = input("Ingrese un nombre de usuario: ").strip()
+
 
     if nuevo_usuario in usuarios:
         print("Ese usuario ya esta registrado\n")
@@ -23,6 +36,12 @@ def registrarUsuario():
         print("Registro exitoso\n")
 
 def login():
+#TODO: cargar la lista de archivos JSON antes de validar
+    """
+    Objetivo: Autenticar a un usuario registrado en el sistema.
+    Parametros: Ninguno.
+    Retorna: str - Nombre del usuario si el login es exitoso, None en caso contrario.
+    """
     print("\n--- Iniciar Sesion ---")
     usuario = input("Usuario: ").strip()
     contrasena = input("Contrasena: ").strip()
@@ -37,3 +56,11 @@ def login():
     else:
         print("El usuario no existe\n")
     return None
+#TODO: usar listas por comprension para:
+#- obtener lista de usuarios en mayusculas
+#- filtrar usuarios por alguna condicion (ej: que empiecen con una letra)
+
+
+#TODO: permitir que como usuario cambiemos de contraseñas
+#TODO: #TODO permitir que el usuario edite sus datos de perfil
+

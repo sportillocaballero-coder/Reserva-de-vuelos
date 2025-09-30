@@ -4,8 +4,13 @@ import random
 vuelos = []
 
 def agregarVuelo():
+#TODO: persistir vuelos en archivo JSON
+#TODO: validar que precio y asientos sean números válidos
+#TODO: agregar matriz de asientos para cada vuelo
     """
-    Agrega un nuevo vuelo si no existe uno igual (origen, destino, fecha).
+    Objetivo: Agregar un nuevo vuelo al sistema si no existe uno igual.
+    Parametros: Ninguno.
+    Retorna: Nada.
     """
     origen = input("Origen: ").strip()
     destino = input("Destino: ").strip()
@@ -32,8 +37,12 @@ def agregarVuelo():
     print("Vuelo agregado con exito")
 
 def eliminarVuelo():
+#TODO: Permitir filtrar vuelos por fehca
+#TODO: Guardar cambios en archivos JSON
     """
-    Elimina un vuelo por su ID.
+    Objetivo: Eliminar un vuelo del sistema por su ID.
+    Parametros: Ninguno.
+    Retorna: Nada.
     """
     if not vuelos:
         print("No hay vuelos cargados")
@@ -53,8 +62,13 @@ def eliminarVuelo():
         print("Vuelo no encontrado")
 
 def busquedaVuelos():
+#TODO: Filtrar vuelos por destino
+#TODO: Filtrar vuelos por fecha
+#TODO: Usar lambda para ordenar vuelos por precio
     """
-    Muestra los vuelos disponibles y permite seleccionar uno.
+    Objetivo: Mostrar los vuelos disponibles y permitir seleccionar uno.
+    Parametros: Ninguno.
+    Retorna: Nada.
     """
     if not vuelos:
         print("No hay vuelos cargados")
@@ -76,3 +90,8 @@ def busquedaVuelos():
         print("Saliendo de la busqueda de vuelos")
     else:
         print("Seleccion invalida")
+
+#TODO: usar listas por comprension para:
+#- obtener solo los IDs de los vuelos
+#- filtrar vuelos por precio mayor a un valor dado
+#- generar lista de (origen, destino) de todos los vuelos
