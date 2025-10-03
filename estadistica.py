@@ -7,7 +7,7 @@
 -totalAsientos()
 
 """
-def estadistica():
+
 #TODO: estadisticas con lambda > obtener vuelo mas caro
 #TODO: estadisticas con lambda > obtener vuelo mas barato
 #TODO: estadisticas con lambda > obtener vuelo mas reservado

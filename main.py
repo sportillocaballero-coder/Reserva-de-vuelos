@@ -3,39 +3,6 @@ from vuelos import agregarVuelo, eliminarVuelo, busquedaVuelos, vuelos
 from reservas import reservarVuelo, verReserva
 from admin import modoAdmin
 
-hola = int(input("Saluda:"))
-hola2 = int(input("Saludar"))
-hola3= int(input("Saluda"))
-def menuVuelos(usuario):
-#TODO: mostrar tambien historial de reservas
-#TODO: permitir cancelar una reserva
-#TODO: permitir pagar una reserva
-#TODO: En todo caso de que el codigo quede muy desordenado, podemos hacer un menu jerarquico
-    """
-    Objetivo: Mostrar el menu de opciones disponibles para usuarios logueados.
-    Parametros:
-      - usuario (str): Usuario logueado.
-    Retorna: Nada.
-    """
-    opcion = "0"
-    while opcion != "4":
-        print(f"\n=== BIENVENIDO ({usuario}) ===")
-        print("1. Reservar vuelo")
-        print("2. Ver mis reservas")
-        print("3. Buscar vuelos")
-        print("4. Salir")
-
-        opcion = input("Seleccione una opcion: ").strip()
-        if opcion == "1":
-            reservarVuelo(usuario)
-        elif opcion == "2":
-            verReserva(usuario)
-        elif opcion == "3":
-            busquedaVuelos()
-        elif opcion == "4":
-            print("Sesion cerrada")
-        else:
-            print("Opcion invalida")
 
 def menuPrincipal():
 #TODO: #TODO cargar datos de usuarios con JSON
