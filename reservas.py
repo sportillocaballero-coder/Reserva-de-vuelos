@@ -1,6 +1,6 @@
 from vuelos import vuelos   #Para acceder a la lista de vuelos
 
-print("Hola")
+
 reservas = []
 
 def reservarVuelo(usuario):

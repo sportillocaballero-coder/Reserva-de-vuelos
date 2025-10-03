@@ -4,6 +4,8 @@ from reservas import reservarVuelo, verReserva
 from admin import modoAdmin
 
 hola = int(input("Saluda:"))
+hola2 = int(input("Saludar"))
+hola3= int(input("Saluda"))
 def menuVuelos(usuario):
 #TODO: mostrar tambien historial de reservas
 #TODO: permitir cancelar una reserva
