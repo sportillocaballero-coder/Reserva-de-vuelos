@@ -1,8 +1,10 @@
 from vuelos import vuelos   #Para acceder a la lista de vuelos
 
+print("Hola")
 reservas = []
 
 def reservarVuelo(usuario):
+
 #TODO: validar que no reserve mas asientos de los disponibles
 #TODO: permitir elegir asiento especifico dentro de una  matriz
 #TODO: guardar reserva en archivo JSON

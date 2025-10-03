@@ -3,6 +3,7 @@ from vuelos import agregarVuelo, eliminarVuelo, busquedaVuelos, vuelos
 from reservas import reservarVuelo, verReserva
 from admin import modoAdmin
 
+hola = int(input("Saluda:"))
 def menuVuelos(usuario):
 #TODO: mostrar tambien historial de reservas
 #TODO: permitir cancelar una reserva
