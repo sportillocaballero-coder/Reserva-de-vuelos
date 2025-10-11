@@ -71,6 +71,13 @@ def verReserva(usuario):
     if not tiene:
         print("No tenes reservas")
 
+#Funcion de pagar reserva 
+pagar_reserva = lambda reservas, id_reserva: [
+    {**r, "estado": "pagada"} if r["id"] == id_reserva and r["estado"] == "pendiente" else r
+    for r in reservas
+]
+
+
 #TODO: permitir cancelar reserva y devolver asientos al vuelo
 #TODO: permitir pagar reserva (cambiar el estado a "pagada")
 #TODO: historial de reservas mas ordenada
