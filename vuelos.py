@@ -16,6 +16,9 @@ def validar_fecha(fecha: str) -> bool:
         return False
     return True
 
+# asientos 
+def generar_matriz_asientos(filas, columnas):
+    return [[0 for _ in range(columnas)] for _ in range(filas)] #El 0 puede significar asiento libre y 1 ocupado.
 # Lista global de vuelos
 vuelos = []
 
@@ -61,10 +64,9 @@ def agregarVuelo():
         "destino": destino,
         "fecha": fecha,
         "precio": precio,
-        "asientos": asientos
+        "asientos": asientos,
+        "matriz": generar_matriz_asientos(asientos // 6, 6)  # ejemplo
     }
-
-
 
     # evitar duplicados
     for v in vuelos:
@@ -130,7 +132,45 @@ def busquedaVuelos():
     else:
         print("Seleccion invalida")
 
+#criterio = input("Filtrar por (d=destino, f=fecha, n=ninguno): ").strip().lower()
+#filtro = None
+#if criterio == "d":
+ #   filtro = input("Destino: ").strip()
+  #  lista = [v for v in vuelos if v["destino"].lower() == filtro.lower()]
+#elif criterio == "f":
+ #   filtro = input("Fecha (DD/MM/AAAA): ").strip()
+  #  lista = [v for v in vuelos if v["fecha"] == filtro]
+#else:
+ #   lista = vuelos
+
+
+#ordenar por precio
+orden = input("¿Ordenar por precio? (asc/desc/ninguno): ").strip().lower()
+if orden == "asc":
+    lista.sort(key=lambda v: v["precio"])
+elif orden == "desc":
+    lista.sort(key=lambda v: v["precio"], reverse=True)
+
+#vuelo más caro
+mas_caro = max(vuelos, key=lambda v: v["precio"])
+
+#vuelo más barato
+mas_barato = min(vuelos, key=lambda v: v["precio"])
+
+#vuelo más reservado
+mas_reservado = min(vuelos, key=lambda v: v["asientos"])
+
+
 #TODO: usar listas por comprension para:
 #- obtener solo los IDs de los vuelos
 #- filtrar vuelos por precio mayor a un valor dado
 #- generar lista de (origen, destino) de todos los vuelos
+
+# IDs de vuelos
+ids = [v["id"] for v in vuelos]
+
+# Vuelos con precio mayor a 500
+caros = [v for v in vuelos if v["precio"] > 500]
+
+# Lista de (origen, destino)
+rutas = [(v["origen"], v["destino"]) for v in vuelos]
