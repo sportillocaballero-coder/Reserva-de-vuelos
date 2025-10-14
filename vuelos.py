@@ -1,4 +1,20 @@
 import random
+from datetime import datetime
+
+# Validar fecha
+def validar_fecha(fecha: str) -> bool:
+    if len(fecha) != 10:
+        return False
+    if fecha[2] != "/" or fecha[5] != "/":
+        return False
+    dia, mes, anio = fecha[:2], fecha[3:5], fecha[6:]
+    if not (dia.isdigit() and mes.isdigit() and anio.isdigit()):
+        return False
+    dia, mes, anio = int(dia), int(mes), int(anio)
+    # sin contemplar febrero bisiesto
+    if not (1 <= dia <= 31 and 1 <= mes <= 12 and anio >= 2024):
+        return False
+    return True
 
 # Lista global de vuelos
 vuelos = []
@@ -15,8 +31,29 @@ def agregarVuelo():
     origen = input("Origen: ").strip()
     destino = input("Destino: ").strip()
     fecha = input("Fecha (DD/MM/AAAA): ").strip()
-    precio = float(input("Precio: ").strip())
-    asientos = int(input("Asientos: ").strip())
+    if not validar_fecha(fecha):
+        print("Formato de fecha incorrecto")
+    return
+
+    precio = input("Precio: ").strip()
+    if precio.replace(".", "", 1).isdigit():   # permite un solo punto decimal
+        precio = float(precio)
+        if precio <= 0:
+            print("El precio debe ser mayor a 0")
+            return
+    else:
+        print("Precio inválido")
+        return
+
+    asientos = input("Asientos: ").strip()
+    if asientos.isdigit():
+        asientos = int(asientos)
+        if asientos <= 0:
+            print("Debe haber al menos 1 asiento")
+            return
+    else:
+        print("Cantidad de asientos inválida")
+        return
 
     vuelo = {
         "id": f"{random.randint(1000, 9999)}",
@@ -26,6 +63,8 @@ def agregarVuelo():
         "precio": precio,
         "asientos": asientos
     }
+
+
 
     # evitar duplicados
     for v in vuelos:
