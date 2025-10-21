@@ -1,7 +1,7 @@
 import random
 
 # Lista global de vuelos
-vuelos = []
+vuelos = [{"id":1,"destino":"BS","fecha":"10/09/2010","precio":1234,"asientos":40},{"id":2,"destino":"BL","fecha":"10/09/2015","precio":1275,"asientos":50},{"id":3,"destino":"PR","fecha":"10/09/2020","precio":8741,"asientos":70}]
 
 def agregarVuelo():
 #TODO: persistir vuelos en archivo JSON

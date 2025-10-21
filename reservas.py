@@ -1,7 +1,8 @@
 from vuelos import vuelos   #Para acceder a la lista de vuelos
 
 
-reservas = []
+reservas = [{"id":123,"usuario":"pepe","vuelo":4321,"cant":2}]
+vecesReservado = [{"id":123,"contador":4},{"id":321,"contador":2},{"id":444,"contador":8}]
 
 def reservarVuelo(usuario):
 
@@ -48,7 +49,17 @@ def reservarVuelo(usuario):
         "vuelo": vid,
         "cant": cant
     }
+
     reservas.append(reserva)
+    idABuscar = reserva["id"]
+    estaReservado = any(objeto["id"] == idABuscar for objeto in vecesReservado)
+
+    if estaReservado:
+        for reservaAComparar in vecesReservado:
+            if reservaAComparar["id"] == idABuscar:
+                reservaAComparar["contador"] = reserva["contador"] + 1
+    else:
+        vecesReservado.append({"id":idABuscar,"vecesReservado": 1})
 
     print("Reserva creada:", reserva)
 

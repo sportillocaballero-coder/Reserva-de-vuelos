@@ -1,7 +1,7 @@
 import re
 
-usuarios = []
-contrasenas = []
+usuarios = ["pepe"]
+contrasenas = ["1234"]
 
 def verificar_caracter_especial(password):
     """

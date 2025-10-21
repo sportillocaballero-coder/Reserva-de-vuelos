@@ -1,19 +1,32 @@
-#TODO: hacer esqueleto de estadistica.py
+from vuelos import vuelos
+from reservas import vecesReservado
 
-"""Funciones: 
--vueloCaro()
--vueloBarato()
--vueloMasReservado()
--totalAsientos()
+def vueloCaro():
+    print("El vuelo mas caro es: ")
+    vueloMasCaro = max(vuelos, key=lambda vuelo: vuelo['precio'])
+    return vueloMasCaro
 
-"""
+def vueloBarato():
+    print("El vuelo mas barato es: ")
+    vueloMasBarato = min(vuelos, key=lambda vuelo: vuelo['precio'])
+    return vueloMasBarato
 
-#TODO: estadisticas con lambda > obtener vuelo mas caro
-#TODO: estadisticas con lambda > obtener vuelo mas barato
-#TODO: estadisticas con lambda > obtener vuelo mas reservado
+def vueloMasReservado():
+    print("El vuelo mas reservado es: ")
+    reservaMasAlta = max(vecesReservado, key=lambda reserva: reserva['contador'])
+    return reservaMasAlta
 
-#TODO: usar listas por comprension para:
-#- obtener lista de precios de vuelos
-#- obtener todos los usuarios que hicieron reservas
-#- obtener todos los vuelos reservados por un usuario especifico
-#- simplificar calculos de estadisticas (vuelo mas caro, mas barato, etc.)
+def estadisticas():
+    c = True
+    while c:
+        print("1. Vuelo Mas Caro")
+        print("2. Vuelo Mas Barato")
+        print("3. Vuelo Mas Reservados")
+        print("4. Salir")        
+        opcion = input("Seleccione una opcion: ").strip()
+        if opcion == "1":
+            print(vueloCaro())
+        elif opcion == "2":
+            print(vueloBarato())
+        elif opcion == "3":
+            print(vueloMasReservado())

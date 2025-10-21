@@ -1,4 +1,5 @@
 from vuelos import agregarVuelo, vuelos
+from estadistica import estadisticas
 
 def modoAdmin():
 # TODO: importar funciones de estadisticas
@@ -16,11 +17,12 @@ def modoAdmin():
         print("Acceso admitido")
 
         opcion = "0"
-        while opcion != "3":
+        while opcion != "4":
             print("\n=== MENU ADMIN ===")
             print("1. Agregar un vuelo al sistema")
             print("2. Mostrar vuelos")
-            print("3. Salir")
+            print("3. Estadisticas")
+            print("4. Salir")
 
             opcion = input("Seleccione una opcion: ").strip()
 
@@ -29,7 +31,9 @@ def modoAdmin():
             elif opcion == "2":
                 print(vuelos)
             elif opcion == "3":
-                print("Saliendo de Admin")
+                estadisticas()
+            elif opcion == "4":
+                print("Saliendo de Admin")            
             else:
                 print("Opcion invalida")
     else:
