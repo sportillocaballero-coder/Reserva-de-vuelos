@@ -6,7 +6,7 @@ vecesReservado = [{"id":123,"contador":4},{"id":321,"contador":2},{"id":444,"con
 
 def reservarVuelo(usuario):
 
-#TODO: validar que no reserve mas asientos de los disponibles
+#TODO:validar que no reserve mas asientos de los disponibles ####EN PROCESO #####
 #TODO: permitir elegir asiento especifico dentro de una  matriz
 #TODO: guardar reserva en archivo JSON
     """
