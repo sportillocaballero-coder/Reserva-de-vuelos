@@ -14,12 +14,13 @@ def menuPrincipal():
     Retorna: Nada.
     """
     opcion = "0"
-    while opcion != "4":
+    while opcion != "5":
         print("\n=== MENU PRINCIPAL ===")
         print("1. Registrate")
         print("2. Login")
         print("3. Modo Admin")
-        print("4. Salir")
+        print("4. Pagar reserva")
+        print("5. Salir")
 
         opcion = input("Seleccione una opcion: ").strip()
         if opcion == "1":
@@ -27,10 +28,14 @@ def menuPrincipal():
         elif opcion == "2":
             usuario = login()
             if usuario is not None:
-                menuVuelos(usuario)
+                menuVuelos(usuario) # type: ignore
         elif opcion == "3":
             modoAdmin()
-        elif opcion == "4":
+        elif opcion == "4": #NUEVO###
+            id_reserva = input("Ingrese el ID de la reserva a pagar: ")
+            reservas[:] = pagar_reserva(reservas, id_reserva) # type: ignore
+            print("✅ Reserva pagada correctamente (si estaba pendiente).")
+        elif opcion == "5":
             print("Nos vemos!")
         else:
             print("Opcion invalida")
