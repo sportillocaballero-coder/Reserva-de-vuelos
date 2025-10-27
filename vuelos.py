@@ -17,15 +17,51 @@ def validar_fecha(fecha: str) -> bool:
     return True
 
 # asientos 
-def generar_matriz_asientos(filas, columnas):
-    return [[0 for _ in range(columnas)] for _ in range(filas)] #El 0 puede significar asiento libre y 1 ocupado.
-# Lista global de vuelos
-vuelos = [{"id":1,"destino":"BS","fecha":"10/09/2010","precio":1234,"asientos":40},{"id":2,"destino":"BL","fecha":"10/09/2015","precio":1275,"asientos":50},{"id":3,"destino":"PR","fecha":"10/09/2020","precio":8741,"asientos":70}]
+def generar_matriz_asientos(total_asientos):
+    """
+    Genera una matriz de asientos típica de avión:
+    - 6 asientos por fila (3-3)
+    - Filas calculadas según total de asientos
+    """
+    columnas = 6  # configuración típica: 3 asientos - pasillo - 3 asientos
+    filas = (total_asientos + columnas - 1) // columnas  # redondeo hacia arriba
+    return [[0 for _ in range(columnas)] for _ in range(filas)]
+
+# Lista global de vuelos (IDs como strings y con 'origen' para evitar KeyError)
+vuelos = [
+    {
+        "id": "1001",
+        "origen": "CBA",
+        "destino": "BS",
+        "fecha": "10/09/2024",
+        "precio": 1234.0,
+        "asientos": 40,
+        "matriz": generar_matriz_asientos(40)
+    },
+    {
+        "id": "1002",
+        "origen": "BUE",
+        "destino": "BL",
+        "fecha": "15/10/2024",
+        "precio": 1275.0,
+        "asientos": 50,
+        "matriz": generar_matriz_asientos(50)
+    },
+    {
+        "id": "1003",
+        "origen": "ROS",
+        "destino": "PR",
+        "fecha": "20/11/2024",
+        "precio": 874.0,
+        "asientos": 70,
+        "matriz": generar_matriz_asientos(70)
+    }
+]
 
 def agregarVuelo():
-#TODO: persistir vuelos en archivo JSON
-#TODO: validar que precio y asientos sean números válidos
-#TODO: agregar matriz de asientos para cada vuelo
+    #TODO: persistir vuelos en archivo JSON1
+    #TODO: validar que precio y asientos sean números válidos
+    #TODO: agregar matriz de asientos para cada vuelo
     """
     Objetivo: Agregar un nuevo vuelo al sistema si no existe uno igual.
     Parametros: Ninguno.
@@ -36,7 +72,7 @@ def agregarVuelo():
     fecha = input("Fecha (DD/MM/AAAA): ").strip()
     if not validar_fecha(fecha):
         print("Formato de fecha incorrecto")
-    return
+        return
 
     precio = input("Precio: ").strip()
     if precio.replace(".", "", 1).isdigit():   # permite un solo punto decimal
@@ -65,7 +101,7 @@ def agregarVuelo():
         "fecha": fecha,
         "precio": precio,
         "asientos": asientos,
-        "matriz": generar_matriz_asientos(asientos // 6, 6)  # ejemplo
+        "matriz": generar_matriz_asientos(asientos)  # genera matriz basada en total de asientos
     }
 
     # evitar duplicados
@@ -78,8 +114,8 @@ def agregarVuelo():
     print("Vuelo agregado con exito")
 
 def eliminarVuelo():
-#TODO: Permitir filtrar vuelos por fehca
-#TODO: Guardar cambios en archivos JSON
+    #TODO: Permitir filtrar vuelos por fehca
+    #TODO: Guardar cambios en archivos JSON
     """
     Objetivo: Eliminar un vuelo del sistema por su ID.
     Parametros: Ninguno.
@@ -92,7 +128,7 @@ def eliminarVuelo():
     vid = input("ID del vuelo a eliminar: ").strip()
     idx = None
     for i in range(len(vuelos)):
-        if vuelos[i]["id"] == vid:
+        if str(vuelos[i]["id"]) == str(vid):
             idx = i
             break
 
@@ -103,9 +139,9 @@ def eliminarVuelo():
         print("Vuelo no encontrado")
 
 def busquedaVuelos():
-#TODO: Filtrar vuelos por destino
-#TODO: Filtrar vuelos por fecha
-#TODO: Usar lambda para ordenar vuelos por precio
+    #TODO: Filtrar vuelos por destino
+    #TODO: Filtrar vuelos por fecha
+    #TODO: Usar lambda para ordenar vuelos por precio
     """
     Objetivo: Mostrar los vuelos disponibles y permitir seleccionar uno.
     Parametros: Ninguno.
@@ -117,14 +153,14 @@ def busquedaVuelos():
 
     print("\n--- Vuelos disponibles ---")
     for idx, vuelo in enumerate(vuelos, 1):
-        print(f"{idx}. ID: {vuelo['id']} | Origen: {vuelo['origen']} | Destino: {vuelo['destino']} | Fecha: {vuelo['fecha']} | Precio: {vuelo['precio']} | Asientos: {vuelo['asientos']}")
+        print(f"{idx}. ID: {vuelo['id']} | Origen: {vuelo.get('origen','-')} | Destino: {vuelo['destino']} | Fecha: {vuelo['fecha']} | Precio: {vuelo['precio']} | Asientos: {vuelo['asientos']}")
 
     seleccion = input(f"Seleccione el vuelo por su numero (1 a {len(vuelos)}), o Enter para salir: ").strip()
     if seleccion.isdigit():
         seleccion = int(seleccion)
         if 1 <= seleccion <= len(vuelos):
             vuelo = vuelos[seleccion - 1]
-            print(f"Seleccionaste vuelo ID {vuelo['id']}, origen {vuelo['origen']} y destino {vuelo['destino']}")
+            print(f"Seleccionaste vuelo ID {vuelo['id']}, origen {vuelo.get('origen','-')} y destino {vuelo['destino']}")
         else:
             print("Seleccion invalida")
     elif seleccion == "":
@@ -132,39 +168,22 @@ def busquedaVuelos():
     else:
         print("Seleccion invalida")
 
-#criterio = input("Filtrar por (d=destino, f=fecha, n=ninguno): ").strip().lower()
-#filtro = None
-#if criterio == "d":
- #   filtro = input("Destino: ").strip()
-  #  lista = [v for v in vuelos if v["destino"].lower() == filtro.lower()]
-#elif criterio == "f":
- #   filtro = input("Fecha (DD/MM/AAAA): ").strip()
-  #  lista = [v for v in vuelos if v["fecha"] == filtro]
-#else:
- #   lista = vuelos
+# Funciones utilitarias (no interactúan al importar)
+def listar_vuelos(orden: str = "ninguno"):
+    """
+    Retorna la lista de vuelos, opcionalmente ordenada por precio:
+    orden = "asc", "desc", o "ninguno"
+    """
+    lista = vuelos.copy()
+    if orden == "asc":
+        lista.sort(key=lambda v: v["precio"])
+    elif orden == "desc":
+        lista.sort(key=lambda v: v["precio"], reverse=True)
+    return lista
 
-
-#ordenar por precio
-orden = input("¿Ordenar por precio? (asc/desc/ninguno): ").strip().lower()
-if orden == "asc":
-    lista.sort(key=lambda v: v["precio"])
-elif orden == "desc":
-    lista.sort(key=lambda v: v["precio"], reverse=True)
-
-#vuelo más caro
-mas_caro = max(vuelos, key=lambda v: v["precio"])
-
-#vuelo más barato
-mas_barato = min(vuelos, key=lambda v: v["precio"])
-
-#vuelo más reservado
-mas_reservado = min(vuelos, key=lambda v: v["asientos"])
-
-
-#TODO: usar listas por comprension para:
-#- obtener solo los IDs de los vuelos
-#- filtrar vuelos por precio mayor a un valor dado
-#- generar lista de (origen, destino) de todos los vuelos
+# Removed: funciones vuelo_mas_caro, vuelo_mas_barato y vuelo_mas_reservado
+# Estas funciones están duplicadas en estadistica.py. Usar las funciones definidas en ese módulo
+# (importando estadistica.vueloCaro / vueloBarato / vueloMasReservado) cuando se necesiten.
 
 # IDs de vuelos
 ids = [v["id"] for v in vuelos]

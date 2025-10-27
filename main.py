@@ -1,5 +1,5 @@
 from usuarios import registrarUsuario, login
-from vuelos import agregarVuelo, eliminarVuelo, busquedaVuelos, vuelos
+from vuelos import busquedaVuelos
 from reservas import reservarVuelo, verReserva
 from admin import modoAdmin
 
@@ -19,7 +19,7 @@ def menuPrincipal():
         print("1. Registrate")
         print("2. Login")
         print("3. Modo Admin")
-        print("4. Pagar reserva")
+        print("4. Mis reservas (ver por usuario)")
         print("5. Salir")
 
         opcion = input("Seleccione una opcion: ").strip()
@@ -28,17 +28,42 @@ def menuPrincipal():
         elif opcion == "2":
             usuario = login()
             if usuario is not None:
-                menuVuelos(usuario) # type: ignore
+                menuVuelos(usuario) 
         elif opcion == "3":
             modoAdmin()
-        elif opcion == "4": #NUEVO###
-            id_reserva = input("Ingrese el ID de la reserva a pagar: ")
-            reservas[:] = pagar_reserva(reservas, id_reserva) # type: ignore
-            print("✅ Reserva pagada correctamente (si estaba pendiente).")
+        elif opcion == "4":
+            usr = input("Ingrese el nombre de usuario para ver sus reservas: ").strip()
+            if usr:
+                verReserva(usr)
         elif opcion == "5":
             print("Nos vemos!")
         else:
             print("Opcion invalida")
+
+
+def menuVuelos(usuario):
+    """
+    Submenú de usuario tras login: buscar vuelos, reservar, ver reservas, cerrar sesión.
+    """
+    opcion = "0"
+    while opcion != "4":
+        print(f"\n--- Menu de {usuario} ---")
+        print("1. Buscar/Listar vuelos")
+        print("2. Reservar vuelo")
+        print("3. Ver mis reservas")
+        print("4. Cerrar sesión")
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == "1":
+            busquedaVuelos()
+        elif opcion == "2":
+            reservarVuelo(usuario)
+        elif opcion == "3":
+            verReserva(usuario)
+        elif opcion == "4":
+            print("Cerrando sesión...")
+        else:
+            print("Opción inválida")
 
 if __name__ == "__main__":
     menuPrincipal()
