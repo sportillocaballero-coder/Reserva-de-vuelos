@@ -13,6 +13,8 @@ def mostrar_matriz_asientos(matriz):
     columnas = len(matriz[0]) if filas > 0 else 0
     letras = [chr(ord('A') + i) for i in range(filas)]
     print("Asientos: (0=libre, 1=ocupado)")
+
+    
     for i, fila in enumerate(matriz):
         fila_str = letras[i] + " "
         for j, asiento in enumerate(fila):

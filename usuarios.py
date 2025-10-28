@@ -43,18 +43,28 @@ def login():
     Retorna: str - Nombre del usuario si el login es exitoso, None en caso contrario.
     """
     print("\n--- Iniciar Sesion ---")
-    usuario = input("Usuario: ").strip()
-    contrasena = input("Contrasena: ").strip()
+    try:
+        usuario = input("Usuario: ").strip()
+        contrasena = input("Contrasena: ").strip()
 
-    if usuario in usuarios:
-        i = usuarios.index(usuario)
-        if contrasenas[i] == contrasena:
+        if not usuario or not contrasena:
+            print("Usuario y contraseña no pueden estar vacíos\n")
+            return None
+
+        i = usuarios.index(usuario)  # Puede lanzar ValueError
+        if contrasenas[i] == contrasena:  # Puede lanzar IndexError
             print(f"Bienvenido/a, {usuario}\n")
             return usuario
         else:
-            print("Contrasena incorrecta\n")
-    else:
+            print("Contraseña incorrecta\n")
+            
+    except ValueError:
         print("El usuario no existe\n")
+    except IndexError:
+        print("Error en el sistema\n")
+    except Exception as e:
+        print("Error inesperado")
+    
     return None
 #TODO: usar listas por comprension para:
 #- obtener lista de usuarios en mayusculas
