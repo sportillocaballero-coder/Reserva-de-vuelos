@@ -11,7 +11,7 @@ def mostrar_matriz_asientos(matriz):
     """
     filas = len(matriz)
     columnas = len(matriz[0]) if filas > 0 else 0
-    letras = [chr(ord('A') + i) for i in range(filas)]
+    letras = [chr(ord('A') + i) for i in range(filas)] #chr convierte numero en caracter y ord caracter en numero? revisar despues 
     print("Asientos: (0=libre, 1=ocupado)")
 
     
@@ -19,7 +19,7 @@ def mostrar_matriz_asientos(matriz):
         fila_str = letras[i] + " "
         for j, asiento in enumerate(fila):
             fila_str += f"{asiento} "
-        print(fila_str + "  " + " ".join([f"{letras[i]}{j+1}" for j in range(columnas)]))
+        print(fila_str + "  " + " ".join([f"{letras[i]}{j+1}" for j in range(columnas)])) #Este bloque esta hecho con IA y no entiendo, despues modificar
 
 def reservarVuelo(usuario):
 
