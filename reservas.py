@@ -19,7 +19,7 @@ def mostrar_matriz_asientos(matriz):
         fila_str = letras[i] + " "
         for j, asiento in enumerate(fila):
             fila_str += f"{asiento} "
-        print(fila_str + "  " + " ".join([f"{letras[i]}{j+1}" for j in range(columnas)])) #Este bloque esta hecho con IA y no entiendo, despues modificar
+        print(fila_str + "  " + " ".join([f"{letras[i]}{j+1}" for j in range(columnas)])) 
 
 def reservarVuelo(usuario):
 

@@ -1,7 +1,18 @@
 import re
+from datos import leerArchivo, cargarArchivo
 
-usuarios = ["pepe"]
-contrasenas = ["1234"]
+#cargar datos al iniciar
+datos_usuarios = leerArchivo("usuarios.json")
+usuarios = datos_usuarios["usuarios"]
+contrasenas = datos_usuarios["contrasenas"]
+
+def guardarCambios():
+    """Guarda los cambios en el archivo JSON"""
+    datos = {
+        "usuarios": usuarios,
+        "contrasenas": contrasenas
+    }
+    return cargarArchivo(datos, "usuarios.json")
 
 def verificar_caracter_especial(password):
     """
@@ -33,7 +44,10 @@ def registrarUsuario():
             nueva_contrasena = input("Ingrese una contrasena: ").strip()
         usuarios.append(nuevo_usuario)
         contrasenas.append(nueva_contrasena)
-        print("Registro exitoso\n")
+        if guardarCambios():
+            print("Registro exitoso y guardado\n")
+        else:
+            print("Registro exitoso pero no se pudo guardar en disco\n")
 
 def login():
 #TODO: cargar la lista de archivos JSON antes de validar
@@ -51,8 +65,8 @@ def login():
             print("Usuario y contraseña no pueden estar vacíos\n")
             return None
 
-        i = usuarios.index(usuario)  # Puede lanzar ValueError
-        if contrasenas[i] == contrasena:  # Puede lanzar IndexError
+        i = usuarios.index(usuario) 
+        if contrasenas[i] == contrasena:  
             print(f"Bienvenido/a, {usuario}\n")
             return usuario
         else:
