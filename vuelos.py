@@ -1,5 +1,27 @@
 import random
 from datetime import datetime
+import os 
+import json
+
+def crearDirectorio(ruta_directorio):
+    """Crea un directorio si no existe"""
+    if not os.path.exists(ruta_directorio):
+        os.makedirs(ruta_directorio)
+
+def cargarArchivo(datos, nombre_archivo):
+    """Guarda datos en un archivo JSON"""
+    try:
+        # Asegurar que exista el directorio datos
+        directorio = os.path.join(os.path.dirname(__file__), "datos")
+        crearDirectorio(directorio)
+        
+        ruta_archivo = os.path.join(directorio, nombre_archivo)
+        with open(ruta_archivo, 'w', encoding='utf-8') as archivo:
+            json.dump(datos, archivo, indent=4, ensure_ascii=False)
+        return True
+    except Exception as e:
+        print(f"Error al guardar: {e}")
+        return False
 
 # Validar fecha
 def validar_fecha(fecha: str) -> bool:
@@ -110,7 +132,8 @@ def agregarVuelo():
             print("Ese vuelo ya existe")
             return
 
-    vuelos.append(vuelo)
+    #vuelos.append(vuelo)
+    cargarArchivo(vuelo,"vuelos.json")
     print("Vuelo agregado con exito")
 
 def eliminarVuelo():

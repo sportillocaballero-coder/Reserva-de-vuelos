@@ -1,4 +1,4 @@
-from vuelos import agregarVuelo, vuelos
+from vuelos import agregarVuelo, eliminarVuelo,busquedaVuelos
 from estadistica import estadisticas
 
 def modoAdmin():
@@ -62,18 +62,17 @@ def menuVuelos():
         print("3. Buscar/Listar vuelos")
         print("4. Volver al menú principal")
         opcion = input("Seleccione una opción: ").strip()
-
-
-    if opcion == "1":
-        agregarVuelo()
-    elif opcion == "2":
-        eliminarVuelo()
-    elif opcion == "3":
-        busquedaVuelos()
-    elif opcion == "4":
-        print("Volviendo al menú principal...")
-    else:
-        print("Opción inválida")
+        
+        if opcion == "1":
+            agregarVuelo()
+        elif opcion == "2":
+            eliminarVuelo()
+        elif opcion == "3":
+            busquedaVuelos()
+        elif opcion == "4":
+            print("Volviendo al menú principal...")
+        else:
+            print("Opción inválida")
 #TODO: reemplazar contrasena fija por una lista de administradores, lo podriamos hacer con json tambien, pero tendriamos tantos archivos que habria qu ecrear carpetas para cada cosa, charlable
 #TODO: permitir crear nuevos administradores por jerarquia
 #TODO: mostrar menu interactivo con opciones de gestion
