@@ -2,7 +2,6 @@ from vuelos import agregarVuelo, eliminarVuelo,busquedaVuelos
 from estadistica import estadisticas
 
 def modoAdmin():
-# TODO: importar funciones de estadisticas
     """
     Objetivo: Permitir acceso al panel de administracion del sistema.
     Parametros: Ninguno.
@@ -10,22 +9,14 @@ def modoAdmin():
     """
     print("\n-- Administracion --")
 
+    
     user = input("Usuario del Admin: ").strip()
     password = input("Contrasena: ").strip()
 
+    
     if user == "admin" and password == "1234":
         print("Acceso admitido")
-    # Admins válidos
-    # admins = [{"user": "admin", "password": "1234"}]
-    # acceso = False
-    # for adm in admins:
-    # if adm["user"] == user and adm["password"] == password:
-    # acceso = True
-    # break
 
-    # if acceso:
-    #print("Acceso admitido")
-    
         opcion = "0"
         while opcion != "4":
             print("\n=== MENU ADMIN ===")
@@ -75,7 +66,7 @@ def menuVuelos():
             print("Opción inválida")
 #TODO: reemplazar contrasena fija por una lista de administradores, lo podriamos hacer con json tambien, pero tendriamos tantos archivos que habria qu ecrear carpetas para cada cosa, charlable
 #TODO: permitir crear nuevos administradores por jerarquia
-#TODO: mostrar menu interactivo con opciones de gestion
+
 
 #TODO: opciones del admin:
 #- Gestionar vuelos (agregar, eliminar, listar, editar)

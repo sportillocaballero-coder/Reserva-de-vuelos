@@ -204,9 +204,6 @@ def listar_vuelos(orden: str = "ninguno"):
         lista.sort(key=lambda v: v["precio"], reverse=True)
     return lista
 
-# Removed: funciones vuelo_mas_caro, vuelo_mas_barato y vuelo_mas_reservado
-# Estas funciones están duplicadas en estadistica.py. Usar las funciones definidas en ese módulo
-# (importando estadistica.vueloCaro / vueloBarato / vueloMasReservado) cuando se necesiten.
 
 # IDs de vuelos
 ids = [v["id"] for v in vuelos]
