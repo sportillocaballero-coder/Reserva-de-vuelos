@@ -16,13 +16,19 @@ def vueloMasReservado():
     reservaMasAlta = max(vecesReservado, key=lambda reserva: reserva['contador'])
     return reservaMasAlta
 
+def totalAsientos():
+    print("Cantidad total de asientos disponibles: ")
+    total = sum([vuelo['asientos'] for vuelo in vuelos])
+    return total
+
 def estadisticas():
     c = True
     while c:
         print("1. Vuelo Mas Caro")
         print("2. Vuelo Mas Barato")
         print("3. Vuelo Mas Reservados")
-        print("4. Salir")        
+        print("4. Total de Asientos") 
+        print("5. Salir")
         opcion = input("Seleccione una opcion: ").strip()
         if opcion == "1":
             print(vueloCaro())
@@ -30,3 +36,9 @@ def estadisticas():
             print(vueloBarato())
         elif opcion == "3":
             print(vueloMasReservado())
+        elif opcion == "4":
+            print(totalAsientos())
+        elif opcion == "5":
+            c = False
+        else:
+            print("Opción inválida, intente nuevamente porfavor.")
