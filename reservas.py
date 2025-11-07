@@ -145,6 +145,16 @@ pagar_reserva = lambda reservas, id_reserva: [
     for r in reservas
 ]
 
+####buscamos el vuelo id ####
+def get_vuelo_safe(vid):
+    try:
+        from vuelos import vuelos  # usa la lista actual
+    except Exception:
+        return None
+    for v in vuelos:
+        if str(v.get("id")) == str(vid):
+            return v
+    return None
 
 #TODO: permitir cancelar reserva y devolver asientos al vuelo
 #TODO: permitir pagar reserva (cambiar el estado a "pagada")##### (EN PROCESO)#######
