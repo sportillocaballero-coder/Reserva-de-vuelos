@@ -156,6 +156,63 @@ def get_vuelo_safe(vid):
             return v
     return None
 
+
+##Cancela una reserva y libera los asientos en la matriz del vuelo.
+    ###### Usa get_vuelo_safe() para recuperar el vuelo.
+def cancelarReserva(id_reserva: str):
+    
+    try:
+        r = next(r for r in reservas if r.get("id") == id_reserva)
+
+        estado = r.get("estado", "pendiente")
+        if estado == "pagada":
+            print("No se puede cancelar una reserva ya pagada.")
+            return
+
+        vuelo = get_vuelo_safe(r.get("vuelo"))
+        if not vuelo:
+            print("El vuelo asociado a la reserva no existe.")
+            return
+
+        matriz = vuelo.get("matriz")
+        if not matriz:
+            print("El vuelo no tiene matriz para liberar asientos.")
+            return
+
+        def _parse_asiento(etq: str):
+            if not etq or len(etq) < 2:
+                return None
+            fila_letra, num_txt = etq[0].upper(), etq[1:]
+            if not num_txt.isdigit():
+                return None
+            f = ord(fila_letra) - ord('A')
+            c = int(num_txt) - 1
+            if 0 <= f < len(matriz) and 0 <= c < len(matriz[0]):
+                return f, c
+            return None
+
+        liberados = 0
+        for etiqueta in r.get("asientos", []):
+            idx = _parse_asiento(etiqueta)
+            if idx:
+                f, c = idx
+                matriz[f][c] = 0
+                liberados += 1
+
+        if "asientos" in vuelo and isinstance(vuelo["asientos"], int):
+            try:
+                vuelo["asientos"] += int(r.get("cant", liberados))
+            except Exception:
+                vuelo["asientos"] += liberados
+
+        reservas.remove(r)
+        print("Reserva cancelada y asientos devueltos.")
+    except StopIteration:
+        print("No existe una reserva con ese ID.")
+    except Exception as e:
+        print("Error al cancelar la reserva:", e)
+
+
 #TODO: permitir cancelar reserva y devolver asientos al vuelo
 #TODO: permitir pagar reserva (cambiar el estado a "pagada")##### (EN PROCESO)#######
 #TODO: historial de reservas mas ordenada
