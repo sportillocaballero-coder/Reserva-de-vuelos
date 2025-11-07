@@ -214,7 +214,12 @@ def cancelarReserva(id_reserva: str):
 
 
 
-    ##funncion pagar reserva .
+##funncion pagar reserva .
+# Lambda para pagar: pendiente -> pagada
+pagar_reserva = lambda reservas, id_reserva: [
+    {**r, "estado": "pagada"} if r["id"] == id_reserva and r.get("estado", "pendiente") == "pendiente" else r
+    for r in reservas
+]
     
 def pagarReserva(id_reserva: str):
 
