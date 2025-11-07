@@ -1,6 +1,5 @@
 from vuelos import vuelos   #Para acceder a la lista de vuelos
 
-
 reservas = [{"id":123,"usuario":"pepe","vuelo":4321,"cant":2}]
 vecesReservado = [{"id":123,"contador":4},{"id":321,"contador":2},{"id":444,"contador":8}]
 
@@ -13,7 +12,6 @@ def mostrar_matriz_asientos(matriz):
     columnas = len(matriz[0]) if filas > 0 else 0
     letras = [chr(ord('A') + i) for i in range(filas)] #chr convierte numero en caracter y ord caracter en numero? revisar despues 
     print("Asientos: (0=libre, 1=ocupado)")
-
     
     for i, fila in enumerate(matriz):
         fila_str = letras[i] + " "
@@ -23,10 +21,10 @@ def mostrar_matriz_asientos(matriz):
 
 def reservarVuelo(usuario):
 
-#TODO:validar que no reserve mas asientos de los disponibles ####EN PROCESO #####
-#TODO: permitir elegir asiento especifico dentro de una  matriz
-#TODO: guardar reserva en archivo JSON
-#TODO Mostrar el precio al reservar asiento
+    #TODO:validar que no reserve mas asientos de los disponibles ####EN PROCESO #####
+    #TODO: permitir elegir asiento especifico dentro de una  matriz
+    #TODO: guardar reserva en archivo JSON
+    #TODO Mostrar el precio al reservar asiento
     """
     Objetivo: Permitir a un usuario reservar asientos en un vuelo existente.
     Parametros:
@@ -44,7 +42,8 @@ def reservarVuelo(usuario):
     vid = input("ID del vuelo: ")
     vuelo = None
     for v in vuelos:
-        if v["id"] == vid:
+        # AJUSTE 1: comparar como texto para evitar int vs str
+        if str(v["id"]) == str(vid):
             vuelo = v
     if not vuelo:
         print("Vuelo no encontrado")
@@ -97,14 +96,18 @@ def reservarVuelo(usuario):
     # Marcar asientos como ocupados
     for fila_idx, col_idx in seleccionados:
         matriz[fila_idx][col_idx] = 1
-    vuelo["asientos"] -= cant
+
+    # AJUSTE 2: solo restar si existe el contador de asientos
+    if "asientos" in vuelo and isinstance(vuelo["asientos"], int):
+        vuelo["asientos"] = max(0, vuelo["asientos"] - cant)
 
     reserva = {
         "id": f"R{len(reservas)+1:04d}",
         "usuario": usuario,
         "vuelo": vid,
         "cant": cant,
-        "asientos": [f"{letras[fila]}{col+1}" for fila, col in seleccionados]
+        "asientos": [f"{letras[fila]}{col+1}" for fila, col in seleccionados],
+        "estado": "pendiente"  # recomendado para pagarReserva
     }
 
     reservas.append(reserva)
@@ -114,15 +117,17 @@ def reservarVuelo(usuario):
     if estaReservado:
         for reservaAComparar in vecesReservado:
             if reservaAComparar["id"] == idABuscar:
-                reservaAComparar["contador"] = reserva["contador"] + 1
+                # AJUSTE 3: no existe reserva["contador"]; incrementamos el propio contador
+                reservaAComparar["contador"] += 1
     else:
-        vecesReservado.append({"id":idABuscar,"vecesReservado": 1})
+        # unificamos la clave con "contador" (antes había "vecesReservado")
+        vecesReservado.append({"id": idABuscar, "contador": 1})
 
     print("Reserva creada:", reserva)
 
 def verReserva(usuario):
-#TODO: permitir filtrar reservas por estado (pendiente, pagada, cancelada)
-#TODO: mostrar reservas ordenadas por fecha
+    #TODO: permitir filtrar reservas por estado (pendiente, pagada, cancelada)
+    #TODO: mostrar reservas ordenadas por fecha
     """
     Objetivo: Mostrar todas las reservas realizadas por el usuario.
     Parametros:
@@ -139,14 +144,18 @@ def verReserva(usuario):
     if not tiene:
         print("No tenes reservas")
 
-#########Funcion de pagar reserva NUEVO#########
+######### Funcion de pagar reserva NUEVO #########
+# (dejar UNA sola lambda; esta es la buena)
 pagar_reserva = lambda reservas, id_reserva: [
-    {**r, "estado": "pagada"} if r["id"] == id_reserva and r["estado"] == "pendiente" else r
+    {**r, "estado": "pagada"} if str(r.get("id")) == str(id_reserva) and r.get("estado","pendiente") == "pendiente" else r
     for r in reservas
 ]
 
-####buscamos el vuelo id ####
+# ===================== AGREGADOS (no rompen lo anterior) =====================
+
+#### 1) Buscar el vuelo por id de forma segura (soporta str/int)
 def get_vuelo_safe(vid):
+    """Busca un vuelo por id (soporta str/int). Devuelve el dict o None."""
     try:
         from vuelos import vuelos  # usa la lista actual
     except Exception:
@@ -156,13 +165,14 @@ def get_vuelo_safe(vid):
             return v
     return None
 
-
-    ##Cancela una reserva y libera los asientos en la matriz del vuelo.
-    ###### Usa get_vuelo_safe() para recuperar el vuelo.
+#### 2) Cancelar reserva y devolver asientos a la matriz
 def cancelarReserva(id_reserva: str):
-    
+    """
+    Cancela una reserva y libera los asientos en la matriz del vuelo.
+    Usa get_vuelo_safe() para recuperar el vuelo.
+    """
     try:
-        r = next(r for r in reservas if r.get("id") == id_reserva)
+        r = next(r for r in reservas if str(r.get("id")) == str(id_reserva))
 
         estado = r.get("estado", "pendiente")
         if estado == "pagada":
@@ -212,19 +222,13 @@ def cancelarReserva(id_reserva: str):
     except Exception as e:
         print("Error al cancelar la reserva:", e)
 
-
-
-##funncion pagar reserva .
-# Lambda para pagar: pendiente -> pagada
-pagar_reserva = lambda reservas, id_reserva: [
-    {**r, "estado": "pagada"} if r["id"] == id_reserva and r.get("estado", "pendiente") == "pendiente" else r
-    for r in reservas
-]
-    
+#### 3) Pagar reserva (usa la lambda pagar_reserva)
 def pagarReserva(id_reserva: str):
-
+    """
+    Cambia estado 'pendiente' -> 'pagada' usando la lambda pagar_reserva.
+    """
     try:
-        r = next(r for r in reservas if r["id"] == id_reserva)
+        r = next(r for r in reservas if str(r.get("id")) == str(id_reserva))
         if "estado" not in r:
             r["estado"] = "pendiente"
         if r.get("estado") == "pagada":
@@ -241,6 +245,7 @@ def pagarReserva(id_reserva: str):
         print("No existe una reserva con ese ID.")
     except Exception as e:
         print("Error al pagar la reserva:", e)
+
 
 
 
