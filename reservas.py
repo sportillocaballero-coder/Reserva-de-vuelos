@@ -157,7 +157,7 @@ def get_vuelo_safe(vid):
     return None
 
 
-##Cancela una reserva y libera los asientos en la matriz del vuelo.
+    ##Cancela una reserva y libera los asientos en la matriz del vuelo.
     ###### Usa get_vuelo_safe() para recuperar el vuelo.
 def cancelarReserva(id_reserva: str):
     
@@ -211,6 +211,32 @@ def cancelarReserva(id_reserva: str):
         print("No existe una reserva con ese ID.")
     except Exception as e:
         print("Error al cancelar la reserva:", e)
+
+
+
+    ##funncion pagar reserva .
+    
+def pagarReserva(id_reserva: str):
+
+    try:
+        r = next(r for r in reservas if r["id"] == id_reserva)
+        if "estado" not in r:
+            r["estado"] = "pendiente"
+        if r.get("estado") == "pagada":
+            print("La reserva ya está pagada.")
+            return
+        if r.get("estado") != "pendiente":
+            print(f"No se puede pagar una reserva en estado '{r.get('estado')}'.")
+            return
+
+        actualizadas = pagar_reserva(reservas, id_reserva)
+        reservas[:] = actualizadas
+        print("Reserva pagada correctamente.")
+    except StopIteration:
+        print("No existe una reserva con ese ID.")
+    except Exception as e:
+        print("Error al pagar la reserva:", e)
+
 
 
 #TODO: permitir cancelar reserva y devolver asientos al vuelo
