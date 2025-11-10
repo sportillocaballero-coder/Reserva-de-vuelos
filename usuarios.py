@@ -108,3 +108,28 @@ return [u for u in usuarios if u.lower().startswith(letra)]
 #TODO: permitir que como usuario cambiemos de contraseñas
 #TODO: #TODO permitir que el usuario edite sus datos de perfil
 
+def cambiarContrasena(usuario):
+    if usuario not in usuarios:
+        print("Usuario no encontrado")
+        return
+
+i = usuarios.index(usuario)
+
+actual = input("Ingrese su contraseña actual: ").strip()
+if actual != contrasenas[i]:
+    print("Contraseña actual incorrecta")
+    return
+
+
+nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
+while not verificar_caracter_especial(nueva):
+    print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
+    nueva = input("Ingrese una contraseña válida: ").strip()
+
+
+contrasenas[i] = nueva
+if guardarCambios():
+    print("Contraseña actualizada correctamente")
+else:
+    print("Contraseña actualizada, pero no se pudo guardar en disco")
+
