@@ -120,12 +120,10 @@ if actual != contrasenas[i]:
     print("Contraseña actual incorrecta")
     return
 
-
 nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
 while not verificar_caracter_especial(nueva):
     print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
     nueva = input("Ingrese una contraseña válida: ").strip()
-
 
 contrasenas[i] = nueva
 if guardarCambios():
@@ -133,3 +131,22 @@ if guardarCambios():
 else:
     print("Contraseña actualizada, pero no se pudo guardar en disco")
 
+def editarPerfil(usuario):
+    if usuario not in usuarios:
+        print("Usuario no encontrado")
+        return
+
+i = usuarios.index(usuario)
+
+nuevo_nombre = input("Ingrese el nuevo nombre de usuario: ").strip()
+
+if nuevo_nombre in usuarios:
+    print("Ese nombre ya existe")
+    return
+
+usuarios[i] = nuevo_nombre
+
+if guardarCambios():
+    print("Perfil actualizado correctamente")
+else:
+    print("Perfil actualizado, pero no se pudo guardar en disco")
