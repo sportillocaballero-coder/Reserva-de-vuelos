@@ -6,6 +6,18 @@ datos_usuarios = leerArchivo("usuarios.json")
 usuarios = datos_usuarios["usuarios"]
 contrasenas = datos_usuarios["contrasenas"]
 
+"""
+- Si el archivo está vacío
+if not isinstance(datos_usuarios, dict):
+datos_usuarios = {"usuarios": [], "contrasenas": []}
+
+- Siempre en listas
+if not isinstance(usuarios, list): usuarios = []
+if not isinstance(contrasenas, list): contrasenas = []
+"""
+
+
+
 def guardarCambios():
     """Guarda los cambios en el archivo JSON"""
     datos = {
@@ -18,7 +30,7 @@ def verificar_caracter_especial(password):
     """
     Objetivo: Verificar si una contrasena contiene al menos un caracter especial.
     Parametros:
-      - password (str): Contrasena a verificar.
+    - password (str): Contrasena a verificar.
     Retorna: bool - True si contiene caracter especial, False en caso contrario.
     """
     patron_especial = r'[^a-zA-Z0-9\s]'
@@ -80,9 +92,17 @@ def login():
         print("Error inesperado")
     
     return None
+
 #TODO: usar listas por comprension para:
 #- obtener lista de usuarios en mayusculas
 #- filtrar usuarios por alguna condicion (ej: que empiecen con una letra)
+
+def usuarios_en_mayusculas():
+    return [u.upper() for u in usuarios]
+
+def filtrar_usuarios_por_letra(letra):
+    letra = letra.lower()
+return [u for u in usuarios if u.lower().startswith(letra)]
 
 
 #TODO: permitir que como usuario cambiemos de contraseñas
