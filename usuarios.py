@@ -4,7 +4,7 @@ from datos import leerArchivo, cargarArchivo
 #cargar datos al iniciar
 datos_usuarios = leerArchivo("usuarios.json")
 usuarios = datos_usuarios["usuarios"]
-contraseñas = datos_usuarios["contraseñas"]
+contrasenas = datos_usuarios["contrasenas"]
 
 """
 - Si el archivo está vacío
@@ -22,7 +22,7 @@ def guardarCambios():
     """Guarda los cambios en el archivo JSON"""
     datos = {
         "usuarios": usuarios,
-        "contraseñas": contraseñas
+        "contrasenas": contrasenas
     }
     return cargarArchivo(datos, "usuarios.json")
 
@@ -55,7 +55,7 @@ def registrarUsuario():
             print("ERROR: la contrasena debe tener un caracter especial (!, #, ?, etc...)")
             nueva_contrasena = input("Ingrese una contrasena: ").strip()
         usuarios.append(nuevo_usuario)
-        contraseñas.append(nueva_contrasena)
+        contrasenas.append(nueva_contrasena)
         if guardarCambios():
             print("Registro exitoso y guardado\n")
         else:
@@ -74,15 +74,15 @@ def login():
         contrasena = input("Contrasena: ").strip()
 
         if not usuario or not contrasena:
-            print("Usuario y contraseña no pueden estar vacíos\n")
+            print("Usuario y contrasena no pueden estar vacíos\n")
             return None
 
         i = usuarios.index(usuario) 
-        if contraseñas[i] == contrasena:  
+        if contrasenas[i] == contrasena:  
             print(f"Bienvenido/a, {usuario}\n")
             return usuario
         else:
-            print("Contraseña incorrecta\n")
+            print("Contrasena incorrecta\n")
             
     except ValueError:
         print("El usuario no existe\n")
@@ -98,7 +98,7 @@ def login():
 #- filtrar usuarios por alguna condicion (ej: que empiecen con una letra)
 
 
-#TODO: permitir que como usuario cambiemos de contraseñas
+#TODO: permitir que como usuario cambiemos de contrasenas
 #TODO: #TODO permitir que el usuario edite sus datos de perfil
 #TODO: Implementar menu para estas funciones
 def cambiarContrasena(usuario):
@@ -108,21 +108,21 @@ def cambiarContrasena(usuario):
 
     i = usuarios.index(usuario)
 
-    actual = input("Ingrese su contraseña actual: ").strip()
-    if actual != contraseñas[i]:
-        print("Contraseña actual incorrecta")
+    actual = input("Ingrese su contrasena actual: ").strip()
+    if actual != contrasenas[i]:
+        print("Contrasena actual incorrecta")
         return
 
-    nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
+    nueva = input("Ingrese la nueva contrasena (debe tener un caracter especial): ").strip()
     while not verificar_caracter_especial(nueva):
-        print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
-        nueva = input("Ingrese una contraseña válida: ").strip()
+        print("ERROR: la contrasena debe tener un caracter especial (!, #, ?, etc...)")
+        nueva = input("Ingrese una contrasena válida: ").strip()
 
-    contraseñas[i] = nueva
+    contrasenas[i] = nueva
     if guardarCambios():
-        print("Contraseña actualizada correctamente")
+        print("Contrasena actualizada correctamente")
     else:
-        print("Contraseña actualizada, pero no se pudo guardar en disco")
+        print("Contrasena actualizada, pero no se pudo guardar en disco")
 
 def editarPerfil(usuario):
     if usuario not in usuarios:
