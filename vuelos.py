@@ -1,5 +1,4 @@
 import random
-from datetime import datetime
 import os 
 import json
 
@@ -24,18 +23,45 @@ def cargarArchivo(datos, nombre_archivo):
         return False
 
 # Validar fecha
-def validar_fecha(fecha: str) -> bool:
+def validar_fecha(fecha):
+    #Si o si tiene que tener 10 caracteres
     if len(fecha) != 10:
         return False
+
+    #Verifica que tenga / 
     if fecha[2] != "/" or fecha[5] != "/":
         return False
-    dia, mes, anio = fecha[:2], fecha[3:5], fecha[6:]
+
+    #Separa por posiciones (0 y 2 toman las posiciones 0 y 1, el 2 no cuenta)
+    dia = fecha[0:2]
+    mes = fecha[3:5]
+    anio = fecha[6:10]
+
+    #Comprueba los numeros
     if not (dia.isdigit() and mes.isdigit() and anio.isdigit()):
         return False
-    dia, mes, anio = int(dia), int(mes), int(anio)
-    # sin contemplar febrero bisiesto
-    if not (1 <= dia <= 31 and 1 <= mes <= 12 and anio >= 2024):
+
+    #Lo convierte a entero
+    dia = int(dia)
+    mes = int(mes)
+    anio = int(anio)
+
+    #lA validacion
+    if anio < 2024:
         return False
+    if mes < 1 or mes > 12:
+        return False
+    if dia < 1 or dia > 31:
+        return False
+
+    #Meses con 30 dias
+    if mes in (4, 6, 9, 11) and dia > 30:
+        return False
+
+    #Febrero, sin bisiesto
+    if mes == 2 and dia > 29:
+        return False
+
     return True
 
 # asientos 
@@ -44,41 +70,53 @@ def generar_matriz_asientos(total_asientos):
     Genera una matriz de asientos típica de avión:
     - 6 asientos por fila (3-3)
     - Filas calculadas según total de asientos
+
+    IMPORTANTE: Esta es la matriz que genera, la que muestra la pantalla esta en reservas.py
     """
-    columnas = 6  # configuración típica: 3 asientos - pasillo - 3 asientos
+    columnas = 6  #3 asientos - pasillo - 3 asientos
     filas = (total_asientos + columnas - 1) // columnas  # redondeo hacia arriba
     return [[0 for _ in range(columnas)] for _ in range(filas)]
 
-# Lista global de vuelos (IDs como strings y con 'origen' para evitar KeyError)
-vuelos = [
-    {
-        "id": "1001",
-        "origen": "CBA",
-        "destino": "BS",
-        "fecha": "10/09/2024",
-        "precio": 1234.0,
-        "asientos": 40,
-        "matriz": generar_matriz_asientos(40)
-    },
-    {
-        "id": "1002",
-        "origen": "BUE",
-        "destino": "BL",
-        "fecha": "15/10/2024",
-        "precio": 1275.0,
-        "asientos": 50,
-        "matriz": generar_matriz_asientos(50)
-    },
-    {
-        "id": "1003",
-        "origen": "ROS",
-        "destino": "PR",
-        "fecha": "20/11/2024",
-        "precio": 874.0,
-        "asientos": 70,
-        "matriz": generar_matriz_asientos(70)
-    }
-]
+"""
+Persistencia de vuelos con json:
+- Los vuelos se guardan en datos/vuelos.json como lista
+- Al iniciar, se cargan desde el archivo
+"""
+VUELOS_DIR = os.path.join(os.path.dirname(__file__), "datos")
+VUELOS_FILE = os.path.join(VUELOS_DIR, "vuelos.json")
+
+def leerVuelosJson():
+    try:
+        if not os.path.exists(VUELOS_FILE):
+            return []
+        with open(VUELOS_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            if isinstance(data, dict):
+                return [data]
+            if isinstance(data, list):
+                return data
+            return []
+    except Exception as e:
+        print(f"Error al leer vuelos: {e}")
+        return []
+
+def guardarVuelos(lista):
+    try:
+        if not os.path.exists(VUELOS_DIR):
+            os.makedirs(VUELOS_DIR)
+        with open(VUELOS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(lista, f, indent=4, ensure_ascii=False)
+        return True
+    except Exception as e:
+        print(f"Error al guardar vuelos: {e}")
+        return False
+
+#Ayuda a persistir los vuelos, toma la lista de vuelos
+def save_vuelos():
+    return guardarVuelos(vuelos)
+
+# Lista global cargada desde el archivo
+vuelos = leerVuelosJson()
 
 def agregarVuelo():
     #TODO: persistir vuelos en archivo JSON1
@@ -126,15 +164,17 @@ def agregarVuelo():
         "matriz": generar_matriz_asientos(asientos)  # genera matriz basada en total de asientos
     }
 
-    # evitar duplicados
+    # evitar duplicados (origen+destino+fecha)
     for v in vuelos:
-        if v["origen"] == origen and v["destino"] == destino and v["fecha"] == fecha:
+        if v.get("origen") == origen and v.get("destino") == destino and v.get("fecha") == fecha:
             print("Ese vuelo ya existe")
             return
 
-    #vuelos.append(vuelo)
-    cargarArchivo(vuelo,"vuelos.json")
-    print("Vuelo agregado con exito")
+    vuelos.append(vuelo)
+    if save_vuelos():
+        print("Vuelo agregado con exito")
+    else:
+        print("Vuelo agregado, pero no se pudo guardar en disco")
 
 def eliminarVuelo():
     #TODO: Permitir filtrar vuelos por fehca
@@ -157,7 +197,10 @@ def eliminarVuelo():
 
     if idx is not None:
         del vuelos[idx]
-        print("Vuelo eliminado con exito")
+        if save_vuelos():
+            print("Vuelo eliminado con exito")
+        else:
+            print("Vuelo eliminado, pero no se pudo guardar")
     else:
         print("Vuelo no encontrado")
 
@@ -191,25 +234,3 @@ def busquedaVuelos():
     else:
         print("Seleccion invalida")
 
-# Funciones utilitarias (no interactúan al importar)
-def listar_vuelos(orden: str = "ninguno"):
-    """
-    Retorna la lista de vuelos, opcionalmente ordenada por precio:
-    orden = "asc", "desc", o "ninguno"
-    """
-    lista = vuelos.copy()
-    if orden == "asc":
-        lista.sort(key=lambda v: v["precio"])
-    elif orden == "desc":
-        lista.sort(key=lambda v: v["precio"], reverse=True)
-    return lista
-
-
-# IDs de vuelos
-ids = [v["id"] for v in vuelos]
-
-# Vuelos con precio mayor a 500
-caros = [v for v in vuelos if v["precio"] > 500]
-
-# Lista de (origen, destino)
-rutas = [(v["origen"], v["destino"]) for v in vuelos]

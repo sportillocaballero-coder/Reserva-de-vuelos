@@ -1,4 +1,5 @@
-from vuelos import vuelos   #Para acceder a la lista de vuelos
+from vuelos import vuelos, save_vuelos   #Acceso a lista de vuelos y persistencia
+import random
 
 reservas = [{"id":123,"usuario":"pepe","vuelo":4321,"cant":2}]
 vecesReservado = [{"id":123,"contador":4},{"id":321,"contador":2},{"id":444,"contador":8}]
@@ -7,21 +8,45 @@ def mostrar_matriz_asientos(matriz):
     """
     Muestra la matriz de asientos con formato típico (A1, A2, ..., B1, B2, ...)
     0 = libre, 1 = ocupado
+
+    IMPORTANTE: Esta funcion es para uso visual, muestra la matriz en la pantalla, en vuelos.py se encuentra la matriz generadora
     """
     filas = len(matriz)
-    columnas = len(matriz[0]) if filas > 0 else 0
-    letras = [chr(ord('A') + i) for i in range(filas)] #chr convierte numero en caracter y ord caracter en numero? revisar despues 
-    print("Asientos: (0=libre, 1=ocupado)")
-    
-    for i, fila in enumerate(matriz):
-        fila_str = letras[i] + " "
-        for j, asiento in enumerate(fila):
-            fila_str += f"{asiento} "
-        print(fila_str + "  " + " ".join([f"{letras[i]}{j+1}" for j in range(columnas)])) 
+    columnas = len(matriz[0])
+    letras = []  #Lista de letras 
+
+    #Se generan las letras ABCD etc
+    for i in range(filas):
+        letras.append(chr(ord('A') + i))
+
+    print("Asientos: (0=libre, 1=ocupado)\n")
+
+    for i in range(filas):
+        #numeros de fila (ejemeplo: A 0 0 1 ...)
+        print(letras[i], end=" ")
+        for j in range(columnas):
+            print(matriz[i][j], end=" ")
+        print("  ", end="")
+
+        #etiquetas de los asientos (ej: A1 A2 A3 ...)
+        for j in range(columnas):
+            print(letras[i] + str(j + 1), end=" ")
+        print()  #salto de linea final por fila
+
+def generarID():
+    while True:
+        nuevoID = random.randint(1000, 9999)
+        existe = False
+        for reserva in reservas:
+            if reserva["id"] == nuevoID:
+                existe = True
+                break
+        if not existe:
+            return nuevoID
 
 def reservarVuelo(usuario):
 
-    #TODO:validar que no reserve mas asientos de los disponibles ####EN PROCESO #####
+    #TODO:validar que no reserve mas asientos de los disponibles 
     #TODO: permitir elegir asiento especifico dentro de una  matriz
     #TODO: guardar reserva en archivo JSON
     #TODO Mostrar el precio al reservar asiento
@@ -102,7 +127,7 @@ def reservarVuelo(usuario):
         vuelo["asientos"] = max(0, vuelo["asientos"] - cant)
 
     reserva = {
-        "id": f"R{len(reservas)+1:04d}",
+        "id": generarID(),
         "usuario": usuario,
         "vuelo": vid,
         "cant": cant,
@@ -122,6 +147,11 @@ def reservarVuelo(usuario):
     else:
         # unificamos la clave con "contador" (antes había "vecesReservado")
         vecesReservado.append({"id": idABuscar, "contador": 1})
+
+    # Persistir cambios en asientos/ocupar matriz del vuelo
+
+    save_vuelos()
+
 
     print("Reserva creada:", reserva)
 
@@ -145,13 +175,14 @@ def verReserva(usuario):
         print("No tenes reservas")
 
 ######### Funcion de pagar reserva NUEVO #########
-# (dejar UNA sola lambda; esta es la buena)
+# (dejar UNA sola lambda; esta es la buena) revisar despues, no se como funciona este codigo.
+"""
 pagar_reserva = lambda reservas, id_reserva: [
     {**r, "estado": "pagada"} if str(r.get("id")) == str(id_reserva) and r.get("estado","pendiente") == "pendiente" else r
     for r in reservas
-]
+]"""
 
-# ===================== AGREGADOS (no rompen lo anterior) =====================
+# ===================== AGREGADOS (no rompen lo anterior) Falta implementar en un menú =====================
 
 #### 1) Buscar el vuelo por id de forma segura (soporta str/int)
 def get_vuelo_safe(vid):
@@ -216,6 +247,9 @@ def cancelarReserva(id_reserva: str):
                 vuelo["asientos"] += liberados
 
         reservas.remove(r)
+        # Persistir devolución de asientos
+        save_vuelos()
+
         print("Reserva cancelada y asientos devueltos.")
     except StopIteration:
         print("No existe una reserva con ese ID.")
@@ -253,7 +287,6 @@ def pagarReserva(id_reserva: str):
 #TODO: permitir pagar reserva (cambiar el estado a "pagada")##### (EN PROCESO)#######
 #TODO: historial de reservas mas ordenada
 #TODO: estadisticas con lambda > calcular total el total de los asientos, reservados
-
 #TODO: usar listas por comprension para:
 #- obtener todas las reservas de un usuario
 #- calcular el total de asientos reservados con sum()

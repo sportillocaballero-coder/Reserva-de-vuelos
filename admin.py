@@ -30,7 +30,7 @@ def modoAdmin():
             if opcion == "1":
                 menuVuelos()
             elif opcion == "2":
-                print("(Módulo usuarios no implementado aún)")
+                busquedaVuelos()
             elif opcion == "3":
                 estadisticas()
             elif opcion == "4":
