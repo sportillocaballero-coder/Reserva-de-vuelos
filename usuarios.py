@@ -74,12 +74,12 @@ def login():
         contrasena = input("Contrasena: ").strip()
 
         if not usuario or not contrasena:
-            print("Usuario y contrasena no pueden estar vacíos\n")
+            print("Usuario o contrasena no pueden estar vacíos\n")
             return None
 
         i = usuarios.index(usuario) 
         if contrasenas[i] == contrasena:  
-            print(f"Bienvenido/a, {usuario}\n")
+            print(f"Bienvenido: {usuario}\n")
             return usuario
         else:
             print("Contrasena incorrecta\n")

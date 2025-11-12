@@ -153,7 +153,7 @@ def reservarVuelo(usuario):
     save_vuelos()
 
 
-    print("Reserva creada:", reserva)
+    print(f"Reserva creada( Vuelo:{reserva['vuelo']} || Asientos: {reserva['asientos']} )")
 
 def verReserva(usuario):
     #TODO: permitir filtrar reservas por estado (pendiente, pagada, cancelada)
@@ -255,33 +255,6 @@ def cancelarReserva(id_reserva: str):
         print("No existe una reserva con ese ID.")
     except Exception as e:
         print("Error al cancelar la reserva:", e)
-
-#### 3) Pagar reserva (usa la lambda pagar_reserva)
-def pagarReserva(id_reserva: str):
-    """
-    Cambia estado 'pendiente' -> 'pagada' usando la lambda pagar_reserva.
-    """
-    try:
-        r = next(r for r in reservas if str(r.get("id")) == str(id_reserva))
-        if "estado" not in r:
-            r["estado"] = "pendiente"
-        if r.get("estado") == "pagada":
-            print("La reserva ya está pagada.")
-            return
-        if r.get("estado") != "pendiente":
-            print(f"No se puede pagar una reserva en estado '{r.get('estado')}'.")
-            return
-
-        actualizadas = pagar_reserva(reservas, id_reserva)
-        reservas[:] = actualizadas
-        print("Reserva pagada correctamente.")
-    except StopIteration:
-        print("No existe una reserva con ese ID.")
-    except Exception as e:
-        print("Error al pagar la reserva:", e)
-
-
-
 
 #TODO: permitir cancelar reserva y devolver asientos al vuelo
 #TODO: permitir pagar reserva (cambiar el estado a "pagada")##### (EN PROCESO)#######
