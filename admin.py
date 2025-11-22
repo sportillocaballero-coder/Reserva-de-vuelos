@@ -64,12 +64,8 @@ def menuVuelos():
             print("Volviendo al menú principal...")
         else:
             print("Opción inválida")
-#TODO: reemplazar contrasena fija por una lista de administradores, lo podriamos hacer con json tambien, pero tendriamos tantos archivos que habria qu ecrear carpetas para cada cosa, charlable
-#TODO: permitir crear nuevos administradores por jerarquia
-
 
 #TODO: opciones del admin:
-#- Gestionar vuelos (agregar, eliminar, listar, editar)
+#- Gestionar vuelos (agregar, eliminar, listar, editar) 
+#_______ Falta funcion de modificar vuelos 
 #- Gestionar usuarios (listar, eliminar, resetear contrasena)
-#- Gestionar reservas (ver todas, cancelar, confirmar pago)
-#- Ver estadisticas (usuario mas activo, vuelo mas caro, etc.)

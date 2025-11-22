@@ -1,60 +1,63 @@
 ======================================PRIORIDAD 1 - TODOs sin JSON (Se pueden hacer a partir de ahora)
 
 usuarios.py
-- validar contrasena con mas reglas (longitud minima, mayusculas, numeros)
-- filtrar y transformar usuarios con listas por comprension
+- validar contrasena con mas reglas (longitud minima, mayusculas, numeros)(COMPLETADO)
 
 
 vuelos.py
-- validar formato de fecha
-- validar que precio y asientos sean correctos
-- agregar matriz de asientos con lista de listas
-- filtrar vuelos por destino o fecha
+✓ validar formato de fecha (COMPLETADO)
+✓ validar que precio y asientos sean correctos (COMPLETADO)
+✓ agregar matriz de asientos con lista de listas (COMPLETADO)
 - ordenar vuelos por precio usando lambda
-- estadisticas con lambda: vuelo mas caro, mas barato, mas reservado
 
 reservas.py
-- validar que no se reserven mas asientos de los disponibles
-- permitir elegir asiento especifico en la matriz
-- cancelar reserva y devolver asientos al vuelo
-- pagar reserva cambiando estado pendiente a pagada
+✓ validar que no se reserven mas asientos de los disponibles (COMPLETADO)
+✓ permitir elegir asiento especifico en la matriz (COMPLETADO)
+✓ cancelar reserva y devolver asientos al vuelo (COMPLETADO)
 - historial de reservas 
 - estadisticas con lambda: total de asientos reservados
 - usar listas por comprension para filtrar reservas de un usuario
 
 admin.py
-- submenu interactivo con opciones para vuelos, usuarios y reservas
-- mostrar estadisticas importadas de estadistica.py
-
+✓ submenu interactivo con opciones para vuelos (COMPLETADO)
+✓ mostrar estadisticas importadas de estadistica.py (COMPLETADO)
+- opciones para gestionar usuarios (listar, eliminar, resetear contrasena)
+- opcion para modificar vuelos existentes
 
 estadistica.py
-- implementar vueloCaro con lambda
-- implementar vueloBarato con lambda
-- implementar vueloMasReservado con lambda
-- implementar totalAsientos con listas por comprension
+✓ implementar vueloCaro con lambda (COMPLETADO)
+✓ implementar vueloBarato con lambda (COMPLETADO)
+✓ implementar vueloMasReservado con lambda (COMPLETADO)
+✓ implementar totalAsientos con listas por comprension (COMPLETADO)
 
 main.py
-- en menu de vuelos agregar opciones para cancelar y pagar reservas y ver historial
-- en menu admin integrar estadisticas
+✓ en menu de vuelos agregar opciones para cancelar reservas (COMPLETADO)
+✓ agregar submenu de editar perfil con opciones completas (COMPLETADO)
+- agregar opcion de historial de reservas
 
 ============================PRIORIDAD 2 - TODOs con JSON (hacer mas adelante)
 
 usuarios.py
-- guardar y cargar usuarios en archivo json
-- editar perfil de usuario guardando cambios
+✓ guardar y cargar usuarios en archivo json (COMPLETADO)
+✓ editar perfil de usuario guardando cambios (COMPLETADO)
 
 vuelos.py
-- guardar y cargar vuelos en json
+✓ guardar y cargar vuelos en json (COMPLETADO)
 
 reservas.py
 - guardar y cargar reservas en json
+- persistir vecesReservado en json
 
 admin.py
 - manejar lista de administradores en json en lugar de admin fijo
 
 main.py
-- cargar datos de usuarios, vuelos y reservas al iniciar
-- guardar datos al salir
+✓ cargar datos de usuarios y vuelos al iniciar (COMPLETADO)
+- cargar reservas al iniciar
+- guardar todas las reservas al salir
+
+datos.py
+✓ funciones de leer y cargar archivos JSON (COMPLETADO)
 
 idiomas.json 
-implementar idiomas ingles y español con json 
+- implementar idiomas ingles y español con json 

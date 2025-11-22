@@ -37,7 +37,6 @@ def verificar_caracter_especial(password):
     return re.search(patron_especial, password) is not None
 
 def registrarUsuario():
-#TODO: #TODO guardar usuarios en archivos json para la persistencia de los datos 
     """
     Objetivo: Registrar un nuevo usuario en el sistema.
     Parametros: Ninguno.
@@ -62,7 +61,6 @@ def registrarUsuario():
             print("Registro exitoso pero no se pudo guardar en disco\n")
 
 def login():
-#TODO: cargar la lista de archivos JSON antes de validar
     """
     Objetivo: Autenticar a un usuario registrado en el sistema.
     Parametros: Ninguno.
@@ -93,15 +91,14 @@ def login():
     
     return None
 
-#TODO: usar listas por comprension para:
-#- obtener lista de usuarios en mayusculas
-#- filtrar usuarios por alguna condicion (ej: que empiecen con una letra)
 
-
-#TODO: permitir que como usuario cambiemos de contrasenas
-#TODO: #TODO permitir que el usuario edite sus datos de perfil
-#TODO: Implementar menu para estas funciones
 def cambiarContrasena(usuario):
+    """
+    Objetivo: Cambiar la contrasena de un usuario existente
+    Parametros:
+    - usuario (str): Nombre del usuario 
+    Retorna: Nueva contraseña
+    """
     if usuario not in usuarios:
         print("Usuario no encontrado")
         return
@@ -124,22 +121,82 @@ def cambiarContrasena(usuario):
     else:
         print("Contrasena actualizada, pero no se pudo guardar en disco")
 
-def editarPerfil(usuario):
+def cambiarNombreUsuario(usuario):
+    """
+    Objetivo: Cambia nombre de usuario
+    Parametros:
+    - usuario (str): Nombre del usuario
+    Retorna: str - Nuevo nombre de usuario si es valido y si no None en caso de que no.
+    """
     if usuario not in usuarios:
         print("Usuario no encontrado")
-    return
+        return None
 
     i = usuarios.index(usuario)
 
     nuevo_nombre = input("Ingrese el nuevo nombre de usuario: ").strip()
 
+    if not nuevo_nombre:
+        print("El nombre de usuario no puede estar vacío")
+        return None
+
     if nuevo_nombre in usuarios:
         print("Ese nombre ya existe")
-        return
+        return None
 
     usuarios[i] = nuevo_nombre
 
     if guardarCambios():
+        print(f"Nombre de usuario actualizado correctamente a: {nuevo_nombre}")
+        return nuevo_nombre
+    else:
+        print("Nombre actualizado, pero no se guardo")
+        return nuevo_nombre
+
+def editarPerfil(usuario):
+    """
+    Objetivo: Editar el perfil completo del usuario completo, nombre y contraseña
+    Parametros:
+    - usuario (str): Nombre de usuario
+    Retorna: str - Nuevo nombre de usuario si es q cambio, usuario original si no cambio, None si es que falla.
+    """
+    if usuario not in usuarios:
+        print("Usuario no encontrado")
+        return None
+
+    i = usuarios.index(usuario)
+    usuario_actualizado = usuario
+
+    print("\n--- Editar Perfil ---")
+    cambiar_nombre = input("¿Desea cambiar su nombre de usuario? (s/n): ").strip().lower()
+    
+    if cambiar_nombre == "s":
+        nuevo_nombre = input("Ingrese el nuevo nombre de usuario: ").strip()
+        
+        if not nuevo_nombre:
+            print("El nombre de usuario no puede estar vacío")
+        elif nuevo_nombre in usuarios:
+            print("Ese nombre ya existe")
+        else:
+            usuarios[i] = nuevo_nombre
+            usuario_actualizado = nuevo_nombre
+            print(f"Nombre actualizado a: {nuevo_nombre}")
+
+    cambiar_pass = input("¿Desea cambiar su contraseña? (s/n): ").strip().lower()
+    
+    if cambiar_pass == "s":
+        nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
+        while not verificar_caracter_especial(nueva):
+            print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
+            nueva = input("Ingresar una contraseña valida: ").strip()
+        
+        i_actual = usuarios.index(usuario_actualizado)
+        contrasenas[i_actual] = nueva
+        print("Contraseña actualizada")
+
+    if guardarCambios():
         print("Perfil actualizado correctamente")
     else:
-        print("Perfil actualizado, pero no se pudo guardar en disco")
+        print("Perfil actualizado pero no se guardo")
+    
+    return usuario_actualizado

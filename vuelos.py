@@ -177,7 +177,6 @@ def agregarVuelo():
         print("Vuelo agregado, pero no se pudo guardar en disco")
 
 def eliminarVuelo():
-    #TODO: Permitir filtrar vuelos por fehca
     #TODO: Guardar cambios en archivos JSON
     """
     Objetivo: Eliminar un vuelo del sistema por su ID.
@@ -205,9 +204,6 @@ def eliminarVuelo():
         print("Vuelo no encontrado")
 
 def busquedaVuelos():
-    #TODO: Filtrar vuelos por destino
-    #TODO: Filtrar vuelos por fecha
-    #TODO: Usar lambda para ordenar vuelos por precio
     """
     Objetivo: Mostrar los vuelos disponibles y permitir seleccionar uno.
     Parametros: Ninguno.

@@ -1,6 +1,7 @@
 from vuelos import vuelos
 from reservas import vecesReservado
 
+#TODO: HAcer estadisticas mas atractivas
 def vueloCaro():
     print("El vuelo mas caro es: ")
     vueloMasCaro = max(vuelos, key=lambda vuelo: vuelo['precio'])

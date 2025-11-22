@@ -45,11 +45,7 @@ def generarID():
             return nuevoID
 
 def reservarVuelo(usuario):
-
-    #TODO:validar que no reserve mas asientos de los disponibles 
-    #TODO: permitir elegir asiento especifico dentro de una  matriz
     #TODO: guardar reserva en archivo JSON
-    #TODO Mostrar el precio al reservar asiento
     """
     Objetivo: Permitir a un usuario reservar asientos en un vuelo existente.
     Parametros:
@@ -80,14 +76,42 @@ def reservarVuelo(usuario):
         return
 
     mostrar_matriz_asientos(matriz)
+    
+    # Calcular asientos libres en la matriz
+    libres = 0
+    for fila in matriz:
+        for asiento in fila:
+            if asiento == 0:
+                libres += 1
+    
+    # Validar asientos disponibles en el vuelo
+    asientos_disponibles = vuelo.get("asientos", 0)
+    if asientos_disponibles <= 0:
+        print("No hay asientos disponibles en este vuelo")
+        return
+    
+    if libres <= 0:
+        print("No hay asientos libres en este vuelo")
+        return
+    
+    print(f"Asientos disponibles: {asientos_disponibles}")
+    
     cant = input("Cantidad de asientos: ")
     if not cant.isdigit():
         print("Cantidad invalida")
         return
     cant = int(cant)
-    libres = sum(asiento == 0 for fila in matriz for asiento in fila)
-    if libres < cant:
-        print(f"Solo hay {libres} asientos libres")
+    
+    if cant <= 0:
+        print("Debe reservar al menos 1 asiento")
+        return
+    
+    if cant > asientos_disponibles:
+        print(f"Solo hay {asientos_disponibles} asientos disponibles para reservar")
+        return
+    
+    if cant > libres:
+        print(f"Solo hay {libres} asientos libres en la matriz")
         return
 
     seleccionados = []
@@ -122,9 +146,11 @@ def reservarVuelo(usuario):
     for fila_idx, col_idx in seleccionados:
         matriz[fila_idx][col_idx] = 1
 
-    # AJUSTE 2: solo restar si existe el contador de asientos
-    if "asientos" in vuelo and isinstance(vuelo["asientos"], int):
-        vuelo["asientos"] = max(0, vuelo["asientos"] - cant)
+    # Restar asientos disponibles
+    if "asientos" in vuelo:
+        vuelo["asientos"] = vuelo["asientos"] - cant
+        if vuelo["asientos"] < 0:
+            vuelo["asientos"] = 0
 
     reserva = {
         "id": generarID(),
@@ -137,7 +163,11 @@ def reservarVuelo(usuario):
 
     reservas.append(reserva)
     idABuscar = reserva["id"]
-    estaReservado = any(objeto["id"] == idABuscar for objeto in vecesReservado)
+    estaReservado = False
+    for objeto in vecesReservado:
+        if objeto["id"] == idABuscar:
+            estaReservado = True
+            break
 
     if estaReservado:
         for reservaAComparar in vecesReservado:
@@ -174,17 +204,9 @@ def verReserva(usuario):
     if not tiene:
         print("No tenes reservas")
 
-######### Funcion de pagar reserva NUEVO #########
-# (dejar UNA sola lambda; esta es la buena) revisar despues, no se como funciona este codigo.
-"""
-pagar_reserva = lambda reservas, id_reserva: [
-    {**r, "estado": "pagada"} if str(r.get("id")) == str(id_reserva) and r.get("estado","pendiente") == "pendiente" else r
-    for r in reservas
-]"""
 
-# ===================== AGREGADOS (no rompen lo anterior) Falta implementar en un menú =====================
 
-#### 1) Buscar el vuelo por id de forma segura (soporta str/int)
+
 def get_vuelo_safe(vid):
     """Busca un vuelo por id (soporta str/int). Devuelve el dict o None."""
     try:
@@ -196,71 +218,78 @@ def get_vuelo_safe(vid):
             return v
     return None
 
-#### 2) Cancelar reserva y devolver asientos a la matriz
-def cancelarReserva(id_reserva: str):
+def cancelarReserva(usuario):
     """
-    Cancela una reserva y libera los asientos en la matriz del vuelo.
-    Usa get_vuelo_safe() para recuperar el vuelo.
+    Objetivo: Cancelar una reserva del usuario y devolver los asientos al vuelo
+    Parametros:
+      - usuario (str): Usuario logueado
+    Retorna: Cancela la reserva hecha por un usuario
     """
-    try:
-        r = next(r for r in reservas if str(r.get("id")) == str(id_reserva))
+    if not usuario:
+        print("Tenes que iniciar sesion")
+        return
 
-        estado = r.get("estado", "pendiente")
-        if estado == "pagada":
-            print("No se puede cancelar una reserva ya pagada.")
-            return
+    print(f"\n-- Reservas de {usuario} --")
+    reservas_usuario = []
+    for r in reservas:
+        if r["usuario"] == usuario:
+            reservas_usuario.append(r)
+    
+    if not reservas_usuario:
+        print("No tenes reservas para cancelar")
+        return
+    
+    for r in reservas_usuario:
+        print(f"ID: {r['id']} | Vuelo: {r['vuelo']} | Asientos: {r['asientos']}")
+    
+    id_reserva = input("\nIngrese el ID de la reserva a cancelar: ").strip()
+    
+    reserva_encontrada = None
+    for r in reservas:
+        if str(r["id"]) == str(id_reserva) and r["usuario"] == usuario:
+            reserva_encontrada = r
+            break
+    
+    if not reserva_encontrada:
+        print("Reserva no encontrada o no es tuyo")
+        return
+    
+    vuelo = get_vuelo_safe(reserva_encontrada.get("vuelo"))
+    if not vuelo:
+        print("El vuelo asociado a la reserva no existe")
+        return
+    
+    matriz = vuelo.get("matriz")
+    if not matriz:
+        print("El vuelo no tiene matriz para liberar asientos")
+        return
+    
+    liberados = 0
+    letras = [chr(ord('A') + i for i in range(len(matriz)))]
+    for etiqueta in reserva_encontrada.get("asientos", []):
+        if not etiqueta or len(etiqueta) < 2:
+            continue
+        fila_letra = etiqueta[0].upper()
+        num_txt = etiqueta[1:]
+        if not num_txt.isdigit():
+            continue
+        f = ord(fila_letra) - ord('A')
+        c = int(num_txt) - 1
+        if 0 <= f < len(matriz) and 0 <= c < len(matriz[0]):
+            matriz[f][c] = 0
+            liberados += 1
+    
+    if "asientos" in vuelo:
+        cant_devolver = reserva_encontrada.get("cant", liberados)
+        vuelo["asientos"] = vuelo["asientos"] + cant_devolver
+    
+    reservas.remove(reserva_encontrada)
+    save_vuelos()
+    
+    print(f"Reserva cancelada y {liberados} asientos devueltos")
 
-        vuelo = get_vuelo_safe(r.get("vuelo"))
-        if not vuelo:
-            print("El vuelo asociado a la reserva no existe.")
-            return
 
-        matriz = vuelo.get("matriz")
-        if not matriz:
-            print("El vuelo no tiene matriz para liberar asientos.")
-            return
-
-        def _parse_asiento(etq: str):
-            if not etq or len(etq) < 2:
-                return None
-            fila_letra, num_txt = etq[0].upper(), etq[1:]
-            if not num_txt.isdigit():
-                return None
-            f = ord(fila_letra) - ord('A')
-            c = int(num_txt) - 1
-            if 0 <= f < len(matriz) and 0 <= c < len(matriz[0]):
-                return f, c
-            return None
-
-        liberados = 0
-        for etiqueta in r.get("asientos", []):
-            idx = _parse_asiento(etiqueta)
-            if idx:
-                f, c = idx
-                matriz[f][c] = 0
-                liberados += 1
-
-        if "asientos" in vuelo and isinstance(vuelo["asientos"], int):
-            try:
-                vuelo["asientos"] += int(r.get("cant", liberados))
-            except Exception:
-                vuelo["asientos"] += liberados
-
-        reservas.remove(r)
-        # Persistir devolución de asientos
-        save_vuelos()
-
-        print("Reserva cancelada y asientos devueltos.")
-    except StopIteration:
-        print("No existe una reserva con ese ID.")
-    except Exception as e:
-        print("Error al cancelar la reserva:", e)
-
-#TODO: permitir cancelar reserva y devolver asientos al vuelo
-#TODO: permitir pagar reserva (cambiar el estado a "pagada")##### (EN PROCESO)#######
+#TODO: Hacer historial de reservas con json, tambien cargar reservas con JSON
+#TODO: Crear un historial de reservas por usuario 
 #TODO: historial de reservas mas ordenada
 #TODO: estadisticas con lambda > calcular total el total de los asientos, reservados
-#TODO: usar listas por comprension para:
-#- obtener todas las reservas de un usuario
-#- calcular el total de asientos reservados con sum()
-#- obtener todos los IDs de vuelos reservados
