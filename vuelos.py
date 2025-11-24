@@ -362,4 +362,3 @@ def busquedaVuelos():
         print("Saliendo de la busqueda de vuelos")
     else:
         print("Seleccion invalida")
-
