@@ -1,0 +1,32 @@
+[
+    {
+        "id": 5247,
+        "usuario": "1",
+        "vuelo": "3864",
+        "cant": 1,
+        "asientos": [
+            "A5"
+        ],
+        "estado": "pendiente"
+    },
+    {
+        "id": 2945,
+        "usuario": "1",
+        "vuelo": "9233",
+        "cant": 1,
+        "asientos": [
+            "D1"
+        ],
+        "estado": "pendiente"
+    },
+    {
+        "id": 4684,
+        "usuario": "1",
+        "vuelo": "9233",
+        "cant": 1,
+        "asientos": [
+            "D2"
+        ],
+        "estado": "pendiente"
+    }
+]

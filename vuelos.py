@@ -118,6 +118,9 @@ def save_vuelos():
 # Lista global cargada desde el archivo
 vuelos = leerVuelosJson()
 
+#Ordenar los vuelos por precio
+
+
 def agregarVuelo():
     #TODO: persistir vuelos en archivo JSON1
     #TODO: validar que precio y asientos sean números válidos

@@ -14,9 +14,9 @@ reservas.py
 ✓ validar que no se reserven mas asientos de los disponibles (COMPLETADO)
 ✓ permitir elegir asiento especifico en la matriz (COMPLETADO)
 ✓ cancelar reserva y devolver asientos al vuelo (COMPLETADO)
-- historial de reservas 
-- estadisticas con lambda: total de asientos reservados
-- usar listas por comprension para filtrar reservas de un usuario
+✓ historial de reservas 
+✓ estadisticas con lambda: total de asientos reservados
+✓ usar listas por comprension para filtrar reservas de un usuario
 
 admin.py
 ✓ submenu interactivo con opciones para vuelos (COMPLETADO)
@@ -45,7 +45,7 @@ vuelos.py
 ✓ guardar y cargar vuelos en json (COMPLETADO)
 
 reservas.py
-- guardar y cargar reservas en json
+✓ guardar y cargar reservas en json
 - persistir vecesReservado en json
 
 admin.py
