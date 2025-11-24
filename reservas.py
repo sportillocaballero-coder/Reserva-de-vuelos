@@ -330,9 +330,9 @@ def historialReservas():
         print("\n No hay reservas registradas en el sistema")
         return
     
-    print("\n" + "="*70)
+    print("\n" + "="*67)
     print(" HISTORIAL COMPLETO DE RESERVAS")
-    print("="*70)
+    print("="*67)
     
     #Esto ordena las reservas por usuario para mejorar la visualizacion, usamos bubble sort
     reservas_ordenadas = sorted(reservas, key=lambda r: r.get('usuario', 'Desconocido'))
@@ -346,9 +346,9 @@ def historialReservas():
         #Imprime como un encabezado por usuario
         if usuario != usuario_actual:
             if usuario_actual is not None:
-                print("-" * 70)
+                print("-" * 67)
             print(f"\n USUARIO: {usuario}")
-            print("-" * 70)
+            print("-" * 67)
             usuario_actual = usuario
         
         #Muestra los detalles
@@ -365,6 +365,6 @@ def historialReservas():
         print()
         contador += 1
     
-    print("="*70)
+    print("="*67)
     print(f" TOTAL DE RESERVAS: {contador}")
-    print("="*70)
+    print("="*67)
