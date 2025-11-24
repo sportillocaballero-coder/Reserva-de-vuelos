@@ -1,5 +1,6 @@
-from vuelos import agregarVuelo, eliminarVuelo,busquedaVuelos
+from vuelos import agregarVuelo, eliminarVuelo, busquedaVuelos, modificarVuelo
 from estadistica import estadisticas
+from reservas import historialReservas
 
 def modoAdmin():
     """
@@ -9,21 +10,27 @@ def modoAdmin():
     """
     print("\n-- Administracion --")
 
-    
     user = input("Usuario del Admin: ").strip()
+    while not user:
+        print("ERROR: el usuario no puede estar vacio")
+        user = input("Usuario del Admin: ").strip()
+    
     password = input("Contrasena: ").strip()
-
+    while not password:
+        print("ERROR: la contrasena no puede estar vacia")
+        password = input("Contrasena: ").strip()
     
     if user == "admin" and password == "1234":
         print("Acceso admitido")
 
         opcion = "0"
-        while opcion != "4":
+        while opcion != "5":
             print("\n=== MENU ADMIN ===")
             print("1. Agregar un vuelo al sistema")
             print("2. Mostrar vuelos")
             print("3. Estadisticas")
-            print("4. Salir")
+            print("4. Historial de Reservas")
+            print("5. Salir")
 
             opcion = input("Seleccione una opcion: ").strip()
 
@@ -34,6 +41,8 @@ def modoAdmin():
             elif opcion == "3":
                 estadisticas()
             elif opcion == "4":
+                historialReservas()
+            elif opcion == "5":
                 print("Saliendo de Admin")            
             else:
                 print("Opcion invalida")
@@ -46,21 +55,24 @@ def menuVuelos():
     Submenú para gestionar vuelos.
     """
     opcion = "0"
-    while opcion != "4":
+    while opcion != "5":
         print("\n--- Gestión de Vuelos ---")
         print("1. Agregar vuelo")
-        print("2. Eliminar vuelo")
-        print("3. Buscar/Listar vuelos")
-        print("4. Volver al menú principal")
+        print("2. Modificar vuelo")
+        print("3. Eliminar vuelo")
+        print("4. Buscar/Listar vuelos")
+        print("5. Volver al menú principal")
         opcion = input("Seleccione una opción: ").strip()
         
         if opcion == "1":
             agregarVuelo()
         elif opcion == "2":
-            eliminarVuelo()
+            modificarVuelo()
         elif opcion == "3":
-            busquedaVuelos()
+            eliminarVuelo()
         elif opcion == "4":
+            busquedaVuelos()
+        elif opcion == "5":
             print("Volviendo al menú principal...")
         else:
             print("Opción inválida")

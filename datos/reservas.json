@@ -28,5 +28,15 @@
             "D2"
         ],
         "estado": "pendiente"
+    },
+    {
+        "id": 9904,
+        "usuario": "Santi",
+        "vuelo": "1536",
+        "cant": 1,
+        "asientos": [
+            "A1"
+        ],
+        "estado": "pendiente"
     }
 ]

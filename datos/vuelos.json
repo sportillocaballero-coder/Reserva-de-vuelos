@@ -65,10 +65,10 @@
         "destino": "colombia",
         "fecha": "25/12/2026",
         "precio": 90000.0,
-        "asientos": 50,
+        "asientos": 49,
         "matriz": [
             [
-                0,
+                1,
                 0,
                 0,
                 0,

@@ -179,6 +179,136 @@ def agregarVuelo():
     else:
         print("Vuelo agregado, pero no se pudo guardar en disco")
 
+def modificarVuelo():
+    """
+    Objetivo: Modificar los datos de un vuelo
+    Parametros: nada
+    Retorna: nada
+    """
+    if not vuelos:
+        print("No se cargaron vuelos ")
+        return
+
+    vid = input("ID del vuelo a modificar: ").strip()
+    while not vid:
+        print("ERROR: el ID del vuelo no puede estar vacio")
+        vid = input("ID del vuelo a modificar: ").strip()
+
+    vuelo = None
+    for v in vuelos:
+        if str(v["id"]) == str(vid):
+            vuelo = v
+            break
+
+    if not vuelo:
+        print("Vuelo no encontrado")
+        return
+
+    print(f"\nVuelo encontrado: ID {vuelo['id']}")
+    print(f"Origen: {vuelo.get('origen', '-')}")
+    print(f"Destino: {vuelo.get('destino', '-')}")
+    print(f"Fecha: {vuelo.get('fecha', '-')}")
+    print(f"Precio: {vuelo.get('precio', '-')}")
+
+    opcion = "0"
+    while opcion != "6":
+        print("\n--- Menu de Modificacion ---")
+        print("1. Modificar origen")
+        print("2. Modificar destino")
+        print("3. Modificar fecha")
+        print("4. Modificar precio")
+        print("5. Modificar todo")
+        print("6. Guardar y salir")
+        opcion = input("Seleccione una opcion: ").strip()
+
+        if opcion == "1":
+            nuevoOrigen = input("Ingrese el nuevo origen: ").strip()
+            while not nuevoOrigen:
+                print("ERROR: el origen no puede estar vacio")
+                nuevoOrigen = input("Nuevo origen: ").strip()
+            vuelo["origen"] = nuevoOrigen
+            print("Se actualizo el origen")
+
+        elif opcion == "2":
+            nuevoDestino = input("Nuevo destino: ").strip()
+            while not nuevoDestino:
+                print("ERROR: el destino no puede estar vacio")
+                nuevoDestino = input("Nuevo destino: ").strip()
+            vuelo["destino"] = nuevoDestino
+            print("Destino actualizado")
+
+        elif opcion == "3":
+            nuevaFecha = input("Nueva fecha (DD/MM/AAAA): ").strip()
+            while not nuevaFecha:
+                print("ERROR: la fecha no puede estar vacia")
+                nuevaFecha = input("Nueva fecha (DD/MM/AAAA): ").strip()
+            if validar_fecha(nuevaFecha):
+                vuelo["fecha"] = nuevaFecha
+                print("Fecha actualizada")
+            else:
+                print("Formato de fecha incorrecto")
+
+        elif opcion == "4":
+            nuevoPrecio = input("Nuevo precio: ").strip()
+            while not nuevoPrecio:
+                print("ERROR: el precio no puede estar vacio")
+                nuevoPrecio = input("Nuevo precio: ").strip()
+            if nuevoPrecio.replace(".", "", 1).isdigit():
+                nuevoPrecio = float(nuevoPrecio)
+                if nuevoPrecio <= 0:
+                    print("El precio debe ser mayor a 0")
+                else:
+                    vuelo["precio"] = nuevoPrecio
+                    print("Precio actualizado")
+            else:
+                print("Precio invalido")
+
+        elif opcion == "5":
+            nuevoOrigen = input("Nuevo origen: ").strip()
+            while not nuevoOrigen:
+                print("ERROR: el origen no puede estar vacio")
+                nuevoOrigen = input("Nuevo origen: ").strip()
+            
+            nuevoDestino = input("Nuevo destino: ").strip()
+            while not nuevoDestino:
+                print("ERROR: el destino no puede estar vacio")
+                nuevoDestino = input("Nuevo destino: ").strip()
+            
+            nuevaFecha = input("Nueva fecha (DD/MM/AAAA): ").strip()
+            while not nuevaFecha:
+                print("ERROR: la fecha no puede estar vacia")
+                nuevaFecha = input("Nueva fecha (DD/MM/AAAA): ").strip()
+            
+            if not validar_fecha(nuevaFecha):
+                print("Formato de fecha incorrecto. No se modificara la fecha")
+            else:
+                vuelo["fecha"] = nuevaFecha
+            
+            nuevoPrecio = input("Nuevo precio: ").strip()
+            while not nuevoPrecio:
+                print("ERROR: el precio no puede estar vacio")
+                nuevoPrecio = input("Nuevo precio: ").strip()
+            
+            if nuevoPrecio.replace(".", "", 1).isdigit():
+                nuevoPrecio = float(nuevoPrecio)
+                if nuevoPrecio > 0:
+                    vuelo["origen"] = nuevoOrigen
+                    vuelo["destino"] = nuevoDestino
+                    vuelo["precio"] = nuevoPrecio
+                    print("Todos los datos actualizados")
+                else:
+                    print("El precio debe ser mayor a 0. No se modificara")
+            else:
+                print("Precio invalido. No se modificara")
+
+        elif opcion == "6":
+            if save_vuelos():
+                print("Cambios guardados con exito")
+            else:
+                print("Cambios guardados, pero no se pudo guardar en disco")
+        else:
+            print("Opcion invalida")
+
 def eliminarVuelo():
     #TODO: Guardar cambios en archivos JSON
     """

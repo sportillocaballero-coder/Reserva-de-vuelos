@@ -43,15 +43,21 @@ def registrarUsuario():
     Retorna: Nada.
     """
     print("\n--Registro--")
+    
     nuevo_usuario = input("Ingrese un nombre de usuario: ").strip()
-
+    while not nuevo_usuario:
+        print("ERROR: el nombre de usuario no puede estar vacio")
+        nuevo_usuario = input("Ingrese un nombre de usuario: ").strip()
 
     if nuevo_usuario in usuarios:
         print("Ese usuario ya esta registrado\n")
     else:
         nueva_contrasena = input("Ingrese una contrasena, debe tener un caracter especial: ").strip()
-        while not verificar_caracter_especial(nueva_contrasena):
-            print("ERROR: la contrasena debe tener un caracter especial (!, #, ?, etc...)")
+        while not nueva_contrasena or not verificar_caracter_especial(nueva_contrasena):
+            if not nueva_contrasena:
+                print("ERROR: la contrasena no puede estar vacia")
+            else:
+                print("ERROR: la contrasena debe tener un caracter especial (!, #, ?, etc...)")
             nueva_contrasena = input("Ingrese una contrasena: ").strip()
         usuarios.append(nuevo_usuario)
         contrasenas.append(nueva_contrasena)
@@ -67,29 +73,28 @@ def login():
     Retorna: str - Nombre del usuario si el login es exitoso, None en caso contrario.
     """
     print("\n--- Iniciar Sesion ---")
-    try:
+    
+    usuario = input("Usuario: ").strip()
+    while not usuario:
+        print("ERROR: el usuario no puede estar vacio")
         usuario = input("Usuario: ").strip()
+    
+    contrasena = input("Contrasena: ").strip()
+    while not contrasena:
+        print("ERROR: la contrasena no puede estar vacia")
         contrasena = input("Contrasena: ").strip()
 
-        if not usuario or not contrasena:
-            print("Usuario o contrasena no pueden estar vacíos\n")
-            return None
-
-        i = usuarios.index(usuario) 
-        if contrasenas[i] == contrasena:  
-            print(f"Bienvenido: {usuario}\n")
-            return usuario
-        else:
-            print("Contrasena incorrecta\n")
-            
-    except ValueError:
+    if usuario not in usuarios:
         print("El usuario no existe\n")
-    except IndexError:
-        print("Error en el sistema\n")
-    except Exception as e:
-        print("Error inesperado")
+        return None
     
-    return None
+    i = usuarios.index(usuario)
+    if contrasenas[i] == contrasena:
+        print(f"Bienvenido: {usuario}\n")
+        return usuario
+    else:
+        print("Contrasena incorrecta\n")
+        return None
 
 
 def cambiarContrasena(usuario):
