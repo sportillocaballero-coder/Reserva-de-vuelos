@@ -1,5 +1,6 @@
 import re
 from datos import leerArchivo, cargarArchivo
+from reservas import archivoReserva, leerReservasJson
 
 #cargar datos al iniciar
 datos_usuarios = leerArchivo("usuarios.json")
@@ -15,8 +16,6 @@ datos_usuarios = {"usuarios": [], "contrasenas": []}
 if not isinstance(usuarios, list): usuarios = []
 if not isinstance(contrasenas, list): contrasenas = []
 """
-
-
 
 def guardarCambios():
     """Guarda los cambios en el archivo JSON"""
@@ -146,6 +145,15 @@ def cambiarNombreUsuario(usuario):
 
     usuarios[i] = nuevo_nombre
 
+    todas_las_reservas = leerReservasJson()
+
+    for reserva in todas_las_reservas:
+        # Si la reserva pertenece al nombre ANTIGUO, lo actualizamos
+        if reserva.get("usuario") == usuario:
+            reserva["usuario"] = nuevo_nombre
+    
+    archivoReserva(todas_las_reservas)
+
     if guardarCambios():
         print(f"Nombre de usuario actualizado correctamente a: {nuevo_nombre}")
         return nuevo_nombre
@@ -153,50 +161,50 @@ def cambiarNombreUsuario(usuario):
         print("Nombre actualizado, pero no se guardo")
         return nuevo_nombre
 
-def editarPerfil(usuario):
-    """
-    Objetivo: Editar el perfil completo del usuario completo, nombre y contraseña
-    Parametros:
-    - usuario (str): Nombre de usuario
-    Retorna: str - Nuevo nombre de usuario si es q cambio, usuario original si no cambio, None si es que falla.
-    """
-    if usuario not in usuarios:
-        print("Usuario no encontrado")
-        return None
+# def editarPerfil(usuario):
+#     """
+#     Objetivo: Editar el perfil completo del usuario completo, nombre y contraseña
+#     Parametros:
+#     - usuario (str): Nombre de usuario
+#     Retorna: str - Nuevo nombre de usuario si es q cambio, usuario original si no cambio, None si es que falla.
+#     """
+#     if usuario not in usuarios:
+#         print("Usuario no encontrado")
+#         return None
 
-    i = usuarios.index(usuario)
-    usuario_actualizado = usuario
+#     i = usuarios.index(usuario)
+#     usuario_actualizado = usuario
 
-    print("\n--- Editar Perfil ---")
-    cambiar_nombre = input("¿Desea cambiar su nombre de usuario? (s/n): ").strip().lower()
+#     print("\n--- Editar Perfil ---")
+#     cambiar_nombre = input("¿Desea cambiar su nombre de usuario? (s/n): ").strip().lower()
     
-    if cambiar_nombre == "s":
-        nuevo_nombre = input("Ingrese el nuevo nombre de usuario: ").strip()
+#     if cambiar_nombre == "s":
+#         nuevo_nombre = input("Ingrese el nuevo nombre de usuario: ").strip()
         
-        if not nuevo_nombre:
-            print("El nombre de usuario no puede estar vacío")
-        elif nuevo_nombre in usuarios:
-            print("Ese nombre ya existe")
-        else:
-            usuarios[i] = nuevo_nombre
-            usuario_actualizado = nuevo_nombre
-            print(f"Nombre actualizado a: {nuevo_nombre}")
+#         if not nuevo_nombre:
+#             print("El nombre de usuario no puede estar vacío")
+#         elif nuevo_nombre in usuarios:
+#             print("Ese nombre ya existe")
+#         else:
+#             usuarios[i] = nuevo_nombre
+#             usuario_actualizado = nuevo_nombre
+#             print(f"Nombre actualizado a: {nuevo_nombre}")
 
-    cambiar_pass = input("¿Desea cambiar su contraseña? (s/n): ").strip().lower()
+#     cambiar_pass = input("¿Desea cambiar su contraseña? (s/n): ").strip().lower()
     
-    if cambiar_pass == "s":
-        nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
-        while not verificar_caracter_especial(nueva):
-            print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
-            nueva = input("Ingresar una contraseña valida: ").strip()
+#     if cambiar_pass == "s":
+#         nueva = input("Ingrese la nueva contraseña (debe tener un caracter especial): ").strip()
+#         while not verificar_caracter_especial(nueva):
+#             print("ERROR: la contraseña debe tener un caracter especial (!, #, ?, etc...)")
+#             nueva = input("Ingresar una contraseña valida: ").strip()
         
-        i_actual = usuarios.index(usuario_actualizado)
-        contrasenas[i_actual] = nueva
-        print("Contraseña actualizada")
+#         i_actual = usuarios.index(usuario_actualizado)
+#         contrasenas[i_actual] = nueva
+#         print("Contraseña actualizada")
 
-    if guardarCambios():
-        print("Perfil actualizado correctamente")
-    else:
-        print("Perfil actualizado pero no se guardo")
+#     if guardarCambios():
+#         print("Perfil actualizado correctamente")
+#     else:
+#         print("Perfil actualizado pero no se guardo")
     
-    return usuario_actualizado
+#     return usuario_actualizado

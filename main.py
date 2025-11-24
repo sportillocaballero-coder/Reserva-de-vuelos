@@ -1,4 +1,4 @@
-from usuarios import registrarUsuario, login, cambiarContrasena, editarPerfil, cambiarNombreUsuario
+from usuarios import registrarUsuario, login, cambiarContrasena, cambiarNombreUsuario
 from vuelos import busquedaVuelos
 from reservas import reservarVuelo, verReserva, cancelarReserva
 from admin import modoAdmin
@@ -70,12 +70,12 @@ def editarPefilMenu(usuario):
     """
     Menu para editar perfil de usuario"""
     opcion = "0"
-    while opcion != "4":
+    while opcion != "3":
         print(f"\n---- Editor de perfil {usuario} ----")
         print("1. Cambiar contraseña")
         print("2. Cambiar nombre de usuario")
-        print("3. Editar perfil completo")
-        print("4. Volver")
+#        print("3. Editar perfil completo")
+        print("3. Volver")
         opcion = input("Seleccione una opción: ").strip()
 
         if opcion == "1":
@@ -84,11 +84,11 @@ def editarPefilMenu(usuario):
             nuevo_usuario = cambiarNombreUsuario(usuario)
             if nuevo_usuario:
                 usuario = nuevo_usuario
+        # elif opcion == "3":
+        #     nuevo_usuario = editarPerfil(usuario)
+        #     if nuevo_usuario:
+        #         usuario = nuevo_usuario
         elif opcion == "3":
-            nuevo_usuario = editarPerfil(usuario)
-            if nuevo_usuario:
-                usuario = nuevo_usuario
-        elif opcion == "4":
             print("Volviendo al menú anterior...")
         else:
             print("Opción inválida")
