@@ -298,7 +298,7 @@ def verTodasEstadisticas():
     
     print("\n" + "="*57)
     print(" FIN DEL REPORTE")
-    print("="*57)
+    print("="*58)
 
 def estadisticas():
     """
