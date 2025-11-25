@@ -133,6 +133,45 @@ def promedioPrecios(vuelos):
     print("="*57)
     return round(promedio, 2)
 
+def totalIngresos(vuelos, reservas):
+    """
+    Objetivo: Calcula el total de ingresos generados por todas las reservas hecas
+    Parametros:
+    - vuelos (list): Lista de vuelos
+    - reservas (list): Lista de reservas
+    Retorna: float - Total de ingresos
+    """
+    if not vuelos or not reservas:
+        print("\n No hay suficientes datos para calcular ingresos")
+        return 0
+    
+    # Crear diccionario de precios por vuelo para búsqueda rápida
+    precios_vuelos = {str(vuelo['id']): vuelo['precio'] for vuelo in vuelos}
+    
+    total = 0
+    reservas_validas = 0
+    
+    for reserva in reservas:
+        vuelo_id = str(reserva.get('vuelo', ''))
+        cantidad = reserva.get('cant', 0)
+        
+        if vuelo_id in precios_vuelos:
+            precio = precios_vuelos[vuelo_id]
+            ingreso = precio * cantidad
+            total += ingreso
+            reservas_validas += 1
+    
+    print("\n" + "="*57)
+    print(" TOTAL DE INGRESOS GENERADOS")
+    print("="*57)
+    print(f" Ingresos Totales: ${round(total, 2)}")
+    print(f" Reservas Contabilizadas: {reservas_validas} reservas")
+    print(f" Total de Reservas: {len(reservas)} reservas")
+    if reservas_validas > 0:
+        print(f" Ingreso Promedio por Reserva: ${round(total/reservas_validas, 2)}")
+    print("="*57)
+    return round(total, 2)
+
 def usuarioMasReservas(reservas):
     """
     Objetivo: Encontrar usuario con mas reservas
@@ -254,6 +293,9 @@ def verTodasEstadisticas():
     vueloMasReservado(reservas)
     usuarioMasReservas(reservas)
     
+    print("\n--- ESTADISTICAS FINANCIERAS ---")
+    totalIngresos(vuelos, reservas)
+    
     print("\n" + "="*57)
     print(" FIN DEL REPORTE")
     print("="*57)
@@ -279,8 +321,9 @@ def estadisticas():
         print("7. Total de Reservas Activas")
         print("8. Vuelo Mas Reservado")
         print("9. Destino Mas Popular")
-        print("10. Ver todas las estadisticas")
-        print("11. Salir")
+        print("10. Total de Ingresos Generados")
+        print("11. Ver todas las estadisticas")
+        print("12. Salir")
         opcion = input("Seleccione una opcion: ").strip()
         
         if opcion == "1":
@@ -302,8 +345,10 @@ def estadisticas():
         elif opcion == "9":
             destinoMasPopular(vuelos)
         elif opcion == "10":
-            verTodasEstadisticas()
+            totalIngresos(vuelos, reservas)
         elif opcion == "11":
+            verTodasEstadisticas()
+        elif opcion == "12":
             bandera = False
         else:
             print("Opción inválida, intente nuevamente porfavor.")

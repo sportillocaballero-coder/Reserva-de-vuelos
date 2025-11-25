@@ -1,0 +1,34 @@
+README - Sistema de Gestión de Vuelos y Reservas
+
+Descripción General Este proyecto implementa un sistema completo de
+gestión de vuelos y reservas, permitiendo operar dos tipos de
+usuarios: - Clientes: registrarse, iniciar sesión, buscar vuelos,
+reservar, ver reservas, cancelar reservas y editar perfil. -
+Administradores: gestionar vuelos, ver estadísticas avanzadas y acceder
+al historial global de reservas.
+
+Características Principales Para Usuarios: - Registro e inicio de
+sesión. - Búsqueda de vuelos disponibles. - Reserva de asientos con
+matriz visual. - Consulta y cancelación de reservas. - Edición de nombre
+y contraseña.
+
+Para Administradores: - Inicio de sesión exclusivo. - Crear, editar,
+eliminar y listar vuelos. - Ver estadísticas avanzadas. - Historial
+completo de reservas.
+
+Persistencia: - Archivos JSON: usuarios.json, vuelos.json,
+reservas.json.
+
+Estructura del Proyecto: admin.py main.py usuarios.py vuelos.py
+reservas.py estadistica.py datos.py data/ (JSON generados
+automáticamente)
+
+Ejecución: python main.py
+
+Credenciales de Administrador: Usuario: admin Contraseña: 1234
+
+Estadísticas Incluidas: - Total de vuelos - Total de reservas - Asientos
+disponibles - Precio promedio, mínimo y máximo - Destino más popular -
+Usuario con más reservas - Vuelo más reservado
+
+Autor: Santiago Portillo - Luciano Crucci

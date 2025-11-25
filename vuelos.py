@@ -122,9 +122,6 @@ vuelos = leerVuelosJson()
 
 
 def agregarVuelo():
-    #TODO: persistir vuelos en archivo JSON1
-    #TODO: validar que precio y asientos sean números válidos
-    #TODO: agregar matriz de asientos para cada vuelo
     """
     Objetivo: Agregar un nuevo vuelo al sistema si no existe uno igual.
     Parametros: Ninguno.
@@ -310,7 +307,6 @@ def modificarVuelo():
             print("Opcion invalida")
 
 def eliminarVuelo():
-    #TODO: Guardar cambios en archivos JSON
     """
     Objetivo: Eliminar un vuelo del sistema por su ID.
     Parametros: Ninguno.

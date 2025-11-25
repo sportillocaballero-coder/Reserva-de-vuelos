@@ -76,8 +76,3 @@ def menuVuelos():
             print("Volviendo al menú principal...")
         else:
             print("Opción inválida")
-
-#TODO: opciones del admin:
-#- Gestionar vuelos (agregar, eliminar, listar, editar) 
-#_______ Falta funcion de modificar vuelos 
-#- Gestionar usuarios (listar, eliminar, resetear contrasena)
