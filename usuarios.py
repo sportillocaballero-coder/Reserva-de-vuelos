@@ -1,6 +1,6 @@
 import re
 from datos import leerArchivo, cargarArchivo
-from reservas import archivoReserva, leerReservasJson
+from reservas import guardarReservas, leerReservasJson
 
 #cargar datos al iniciar
 datos_usuarios = leerArchivo("usuarios.json")
@@ -157,7 +157,7 @@ def cambiarNombreUsuario(usuario):
         if reserva.get("usuario") == usuario:
             reserva["usuario"] = nuevo_nombre
     
-    archivoReserva(todas_las_reservas)
+    guardarReservas(todas_las_reservas)
 
     if guardarCambios():
         print(f"Nombre de usuario actualizado correctamente a: {nuevo_nombre}")
